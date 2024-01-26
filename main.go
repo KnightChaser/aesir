@@ -1,51 +1,43 @@
 package main
 
 import (
-	"aesir/datastructure"
 	"aesir/db"
-	"context"
-	"encoding/json"
 	"fmt"
-	"log"
+	"net/http"
 
-	"github.com/KnightChaser/sentinela"
-	"github.com/tidwall/gjson"
+	"github.com/gorilla/mux"
 )
 
 func main() {
-	// Set client options
+
+	// Setting up database
 	mongoDBURL := "mongodb://localhost:27017"
 	client := db.ConnectMongoDBSession(mongoDBURL)
 	defer db.DisconnectMongoDBSession(client)
 
-	// Some additional code can be added here to perform operations with the MongoDB client
-	// For example, you can use the 'client' variable to perform CRUD operations.
-	db := client.Database("aesir")
-	collection := db.Collection("userB")
-	fmt.Println(collection)
+	// Setting up web server with gorilla/mux
+	muxRouter := mux.NewRouter()
 
-	// Sysmon(System Monitor) log file in Windows
-	stats, err := sentinela.ParseEVTX("D:/sampleEVTX.evtx")
-	if err != nil {
-		log.Fatal(err)
-	}
+	muxRouter.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("./static"))))
+	muxRouter.PathPrefix("/static/inspectEVTX").Handler(http.StripPrefix("/static/inspectEVTX", http.FileServer(http.Dir("./static/inspectEVTX"))))
 
-	for _, stat := range stats.Event {
+	// Define a route for the root path "/"
+	muxRouter.HandleFunc("/", homeHandler)
+	muxRouter.HandleFunc("/inspectEVTX/", inspectEVTXHandler)
 
-		// Jsonify Sysmon EVTX structure with proper data type
-		// Because data.Event.EventData is different for every sysmon event ID,
-		// Process EventData with the dedicated function.
-		id := gjson.Get(stat, "Event.System.EventID").Int()
-		data := datastructure.SysmonEvent{}
-		json.Unmarshal([]byte(stat), &data)
-		data.Event.EventData = datastructure.EventDataStructureJsonify(id, stat)
+	// Start the server on port 8080
+	listeningAddressPort := "0.0.0.0:8080"
+	fmt.Println("Server is running on http://localhost:8080")
+	http.ListenAndServe(listeningAddressPort, muxRouter)
+}
 
-		response, err := collection.InsertOne(context.TODO(), data)
-		if err != nil {
-			log.Fatal(err)
-		}
-		fmt.Println(response)
+// HomeHandler is the handler function for the home route "/"
+func homeHandler(w http.ResponseWriter, r *http.Request) {
+	// Serve the index.html file
+	http.ServeFile(w, r, "static/index.html")
+}
 
-		fmt.Println("=========================================================================")
-	}
+func inspectEVTXHandler(w http.ResponseWriter, r *http.Request) {
+	// Serve the upload_sysmon_evtx.html file
+	http.ServeFile(w, r, "static/inspectEVTX/upload_sysmon_evtx.html")
 }
