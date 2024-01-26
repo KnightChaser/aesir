@@ -23,8 +23,9 @@ func main() {
 	// Setting up web server with gorilla/mux
 	muxRouter := mux.NewRouter()
 
-	muxRouter.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("./static"))))
-	muxRouter.PathPrefix("/static/inspectEVTX").Handler(http.StripPrefix("/static/inspectEVTX", http.FileServer(http.Dir("./static/inspectEVTX"))))
+	muxRouter.PathPrefix("/web/").Handler(http.StripPrefix("/web/", http.FileServer(http.Dir("./web"))))
+	muxRouter.PathPrefix("/web/inspectEVTX").Handler(http.StripPrefix("/web/inspectEVTX", http.FileServer(http.Dir("/web/inspectEVTX"))))
+	muxRouter.PathPrefix("/web/asset/font/").Handler(http.StripPrefix("/web/asset/font/", http.FileServer(http.Dir("/web/asset/font/"))))
 
 	// Define a route for the root path "/"
 	muxRouter.HandleFunc("/", homeHandler)
@@ -40,12 +41,12 @@ func main() {
 // HomeHandler is the handler function for the home route "/"
 func homeHandler(w http.ResponseWriter, r *http.Request) {
 	// Serve the index.html file
-	http.ServeFile(w, r, "static/index.html")
+	http.ServeFile(w, r, "web/index.html")
 }
 
 func inspectEVTXHandler(w http.ResponseWriter, r *http.Request) {
 	// Serve the upload_sysmon_evtx.html file
-	http.ServeFile(w, r, "static/inspectEVTX/upload_sysmon_evtx.html")
+	http.ServeFile(w, r, "web/inspectEVTX/upload_sysmon_evtx.html")
 }
 
 func inspectEVTXUploadHandler(w http.ResponseWriter, r *http.Request) {
