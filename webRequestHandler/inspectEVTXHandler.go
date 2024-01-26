@@ -6,8 +6,10 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
+	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -35,8 +37,8 @@ func InspectEVTXHandler(w http.ResponseWriter, r *http.Request) {
 	if collectionExists {
 		// Perform additional actions based on the existence of the collection, e.g., list collections
 
-		// List all collections
-		collections, err := listCollections(db)
+		// List all collections with additional information
+		collectionsInfo, err := listCollectionsInfo(db)
 		if err != nil {
 			fmt.Println("Error listing collections:", err)
 			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
@@ -46,9 +48,9 @@ func InspectEVTXHandler(w http.ResponseWriter, r *http.Request) {
 		// Instruction2) Render welcome.html with the data containing every name of collection.
 		// welcome.html is equivalent to the HTML file that you just created.
 		data := struct {
-			Collections []string
+			CollectionsInfo []CollectionInfo
 		}{
-			Collections: collections,
+			CollectionsInfo: collectionsInfo,
 		}
 
 		// Render a template or provide additional information
@@ -60,7 +62,6 @@ func InspectEVTXHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func checkEVTXCollectionExistence(db *mongo.Database) (bool, error) {
-
 	// Instruction1) If there is no collection in the database, it means there is no EVTX collection.
 	// so, return true if one or more collections exist, false if not.
 
@@ -70,20 +71,59 @@ func checkEVTXCollectionExistence(db *mongo.Database) (bool, error) {
 	}
 
 	// Collection exists
-	if len(collections) >= 1 {
-		return true, nil
-	}
-
-	return false, nil
+	return len(collections) >= 1, nil
 }
 
-func listCollections(db *mongo.Database) ([]string, error) {
-	// Retrieve a list of all collections in the database
+// CollectionInfo represents information about a MongoDB collection
+type CollectionInfo struct {
+	Name        string
+	DocumentQty int64
+	CreatedTime time.Time
+}
+
+func listCollectionsInfo(db *mongo.Database) ([]CollectionInfo, error) {
+	// Retrieve a list of all collections in the database with additional information
 	collections, err := db.ListCollectionNames(context.Background(), bson.M{})
 	if err != nil {
 		return nil, err
 	}
-	return collections, nil
+
+	var collectionsInfo []CollectionInfo
+
+	// Prepare every collection's name, # of documents, and creation time.
+	// Creation time can be estimated by the first document in the collection's objectId which has a timestamp information.
+	// MongoDB provides ObjectId.getTimestamp()
+	for _, collectionName := range collections {
+		// Count documents in the collection
+		documentQty, err := db.Collection(collectionName).EstimatedDocumentCount(context.Background())
+		if err != nil {
+			return nil, err
+		}
+
+		// Get the first document's ObjectId to calculate the creation time
+		var firstDoc map[string]interface{}
+		err = db.Collection(collectionName).FindOne(context.Background(), bson.M{}).Decode(&firstDoc)
+		if err != nil {
+			return nil, err
+		}
+
+		// Extract and convert the ObjectId to a timestamp
+		objectID, ok := firstDoc["_id"].(primitive.ObjectID)
+		if !ok {
+			return nil, fmt.Errorf("unable to extract ObjectID from the document")
+		}
+		createdTime := objectID.Timestamp()
+
+		// Append collection info to the list
+		info := CollectionInfo{
+			Name:        collectionName,
+			DocumentQty: documentQty,
+			CreatedTime: createdTime,
+		}
+		collectionsInfo = append(collectionsInfo, info)
+	}
+
+	return collectionsInfo, nil
 }
 
 func renderTemplate(w http.ResponseWriter, templateFile string, data interface{}) {
