@@ -9,6 +9,8 @@
 ![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)
 ### A simple System monitor(Sysmon) EVTX inspector; search, visualize, and track Sysmon events
 
+How big is this project? ▶ ![code_line_badge](https://tokei.rs/b1/github/knightchaser/aesir)
+
 ## Preview
 You can upload your own Sysmon EVTX file with your own name
 ![1](./_readme_pictures/1.png)
