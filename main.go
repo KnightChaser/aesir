@@ -14,7 +14,7 @@ func main() {
 	muxRouter := mux.NewRouter()
 
 	muxRouter.PathPrefix("/web/").Handler(http.StripPrefix("/web/", http.FileServer(http.Dir("./web"))))
-	muxRouter.PathPrefix("/web/inspectEVTX").Handler(http.StripPrefix("/web/inspectEVTX", http.FileServer(http.Dir("/web/inspectEVTX"))))
+	muxRouter.PathPrefix("/web/inspectEVTX/").Handler(http.StripPrefix("/web/inspectEVTX/", http.FileServer(http.Dir("/web/inspectEVTX/"))))
 	muxRouter.PathPrefix("/web/asset/font/").Handler(http.StripPrefix("/web/asset/font/", http.FileServer(http.Dir("/web/asset/font/"))))
 
 	// Define a route for the root path "/"

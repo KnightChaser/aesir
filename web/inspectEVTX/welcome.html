@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Enlisted EVTX Collections</title>
+</head>
+<body>
+
+<h1>Enlisted EVTX Collections</h1>
+
+{{ if .Collections }}
+    <ul>
+        {{ range .Collections }}
+            <li>{{ . }}</li>
+        {{ end }}
+    </ul>
+{{ else }}
+    <p>No EVTX collections found.</p>
+{{ end }}
+
+<p>Additional information or links can be added here.</p>
+
+</body>
+</html>
