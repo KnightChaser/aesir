@@ -1,54 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aesir - System Monitor EVTX File Inspector</title>
-    <!-- Add Bootstrap CSS link -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-        crossorigin="anonymous"></script>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Aesir - System Monitor EVTX File Inspector</title>
+        <!-- Add Bootstrap CSS link -->
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+            crossorigin="anonymous">
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+            crossorigin="anonymous"></script>
 
-    <!-- Add Sweetalert2 -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link rel="stylesheet" href="/web/entrance/welcome.css">
-</head>
+        <!-- Add Sweetalert2 -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <link rel="stylesheet" href="/web/entrance/welcome.css">
+    </head>
 
-<body class="text-center">
+    <body class="text-center">
 
-    <h1><b>Aesir</b></h1>
-    <h4>A Simple System Monitor EVTX File Inspector</h4>
-    
-    {{ if .CollectionsInfo }}
-    <div class="table-responsive">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">Collection name</th>
-                    <th scope="col"># of EVTX events</th>
-                    <th scope="col">Created time</th>
-                </tr>
-            </thead>
-            <tbody class="table-group-divider">
-                {{ range .CollectionsInfo }}
-                <tr>
-                    <td>{{ .Name }}</td>
-                    <td>{{ .DocumentQty }}</td>
-                    <td>{{ .CreatedTime.Format "2006-01-02 15:04:05" }}</td>
-                </tr>
-                {{ end }}
-            </tbody>
-        </table>
-    </div>
-    {{ else }}
-    <p>No EVTX collections found.</p>
-    {{ end }}
+        <h1><b>Aesir</b></h1>
+        <h4>A Simple System Monitor EVTX File Inspector</h4>
 
-    <p class="mt-3">Additional information or links can be added here.</p>
+        {{ if .CollectionsInfo }}
+        <div class="table-responsive">
+            <table class="table">
+                <caption>There are some saved EVTX collections in the
+                    DB.</caption>
+                <thead>
+                    <tr>
+                        <th scope="col">Collection name</th>
+                        <th scope="col"># of EVTX events</th>
+                        <th scope="col">Created time</th>
+                    </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                    {{ range .CollectionsInfo }}
+                    <tr>
+                        <td>{{ .Name }}</td>
+                        <td>{{ .DocumentQty }}</td>
+                        <td>{{ .CreatedTime.Format "2006-01-02 15:04:05" }}</td>
+                    </tr>
+                    {{ end }}
+                </tbody>
+            </table>
+        </div>
+        {{ else }}
+        <p>No EVTX collections found.</p>
+        {{ end }}
 
-</body>
+        <button class="btn btn-primary btn-lg" type="button"
+            onclick="location.href='/web/entrance/upload_sysmon_evtx.html'">Register
+            a new EVTX file</button>
+
+    </body>
 
 </html>
