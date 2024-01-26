@@ -1,0 +1,26 @@
+@font-face {
+    font-family: 'IBMPlexSans';
+    src: url('/web/asset/font/IBMPlexSans-Regular.ttf') format('truetype');
+}
+
+body {
+    font-family: 'IBMPlexSans', sans-serif;
+    height: 100vh;
+    margin: 0;
+}
+
+.text-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.table {
+    margin-top: 20px;
+}
+
+.table th,
+.table td {
+    text-align: center;
+}

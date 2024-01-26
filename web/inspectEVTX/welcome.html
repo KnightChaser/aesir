@@ -1,29 +1,29 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Aesir - System Monitor EVTX File Inspector</title>
-        <!-- Add Bootstrap CSS link -->
-        <link
-            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-            rel="stylesheet"
-            integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
-            crossorigin="anonymous">
-        <script
-            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-            crossorigin="anonymous"></script>
+<html lang="en">
 
-        <!-- Add Sweetalert2 -->
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        <link rel="stylesheet" href="/web/inspectEVTX/upload_sysmon_evtx.css">
-    </head>
-    <body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aesir - System Monitor EVTX File Inspector</title>
+    <!-- Add Bootstrap CSS link -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
 
-        <h1>Enlisted EVTX Collections</h1>
+    <!-- Add Sweetalert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="/web/inspectEVTX/welcome.css">
+</head>
 
-        {{ if .CollectionsInfo }}
+<body class="text-center">
+
+    <h1><b>Aesir</b></h1>
+    <h4>A Simple System Monitor EVTX File Inspector</h4>
+    
+    {{ if .CollectionsInfo }}
+    <div class="table-responsive">
         <table class="table">
             <thead>
                 <tr>
@@ -32,7 +32,7 @@
                     <th scope="col">Created time</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="table-group-divider">
                 {{ range .CollectionsInfo }}
                 <tr>
                     <td>{{ .Name }}</td>
@@ -42,11 +42,13 @@
                 {{ end }}
             </tbody>
         </table>
-        {{ else }}
-        <p>No EVTX collections found.</p>
-        {{ end }}
+    </div>
+    {{ else }}
+    <p>No EVTX collections found.</p>
+    {{ end }}
 
-        <p>Additional information or links can be added here.</p>
+    <p class="mt-3">Additional information or links can be added here.</p>
 
-    </body>
+</body>
+
 </html>
