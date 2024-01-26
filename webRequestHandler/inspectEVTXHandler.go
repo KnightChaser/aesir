@@ -54,10 +54,10 @@ func InspectEVTXHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// Render a template or provide additional information
-		renderTemplate(w, "web/inspectEVTX/welcome.html", data)
+		renderTemplate(w, "web/entrance/welcome.html", data)
 	} else {
 		// Redirect to upload_sysmon_evtx.html
-		http.ServeFile(w, r, "web/inspectEVTX/upload_sysmon_evtx.html")
+		http.ServeFile(w, r, "web/entrance/upload_sysmon_evtx.html")
 	}
 }
 
