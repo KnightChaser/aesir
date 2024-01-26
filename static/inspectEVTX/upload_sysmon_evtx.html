@@ -21,13 +21,13 @@
         <h1>Aesir</h1>
         <h4>A Simple System Monitor EVTX File Inspector</h4>
 
-        <form action="/upload" method="post" enctype="multipart/form-data">
+        <form action="./upload" method="post" enctype="multipart/form-data">
             <div class="mb-3">
                 <label for="formFile" class="form-label">Upload your <b>EVTX</b> File</label>
-                <input class="form-control" type="file" id="formFile">
+                <input class="form-control" type="file" id="formFile" name="EVTXfile">
             </div>
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="floatingInput" placeholder="PC281 JAN 3">
+                <input type="text" class="form-control" id="floatingInput" name="name" placeholder="PC281 JAN 3">
                 <label for="floatingInput">A name for this EVTX</label>
               </div>
             <button type="submit" class="btn btn-primary">Upload</button>

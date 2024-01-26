@@ -3,12 +3,15 @@ module aesir
 go 1.21.5
 
 require (
+	github.com/KnightChaser/sentinela v0.0.0-20240125041234-05521e693d90
 	github.com/gorilla/mux v1.8.1
 	github.com/tidwall/gjson v1.17.0
 	go.mongodb.org/mongo-driver v1.13.1
 )
 
 require (
+	github.com/0xrawsec/golang-evtx v1.2.9 // indirect
+	github.com/0xrawsec/golang-utils v1.3.0 // indirect
 	github.com/golang/snappy v0.0.1 // indirect
 	github.com/klauspost/compress v1.13.6 // indirect
 	github.com/montanaflynn/stats v0.0.0-20171201202039-1bf9dbcd8cbe // indirect
