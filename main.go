@@ -3,12 +3,21 @@ package main
 import (
 	"aesir/webRequestHandler"
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"github.com/joho/godotenv"
 )
 
 func main() {
+
+	// ENV setting via godotenv pkg
+	err := godotenv.Load()
+	if err != nil {
+		log.Panic("Failed to load .env file.")
+	}
+
 	// Setting up web server with gorilla/mux
 	muxRouter := mux.NewRouter()
 

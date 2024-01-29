@@ -62,13 +62,13 @@ func InspectEVTXUploadHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Set client options
-	mongoDBURL := "mongodb://localhost:27017"
+	mongoDBURL := os.Getenv("DB_ACCESS_FULL_URL")
 	client := db.ConnectMongoDBSession(mongoDBURL)
 	defer db.DisconnectMongoDBSession(client)
 
 	// Some additional code can be added here to perform operations with the MongoDB client
 	// For example, you can use the 'client' variable to perform CRUD operations.
-	dbname := "aesir"
+	dbname := os.Getenv("DB_NAME")
 	db := client.Database(dbname)
 	collection := db.Collection(dbCollectionName)
 	fmt.Println(collection)
