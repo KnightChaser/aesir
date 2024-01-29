@@ -42,6 +42,7 @@ func main() {
 	muxRouter.HandleFunc("/entrance", webRequestHandler.InspectEVTXHandler)
 	muxRouter.HandleFunc("/entrance/upload", webRequestHandler.InspectEVTXUploadHandler)
 	muxRouter.HandleFunc("/inspect", webRequestHandler.InspectEVTXAnalysisHandler)
+	muxRouter.HandleFunc("/api", webRequestHandler.API) // default
 
 	// Start the server on port 8080
 	listeningAddressPort := "0.0.0.0:8080"
