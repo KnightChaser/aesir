@@ -36,6 +36,7 @@
                         <th scope="col">Collection name</th>
                         <th scope="col"># of EVTX events</th>
                         <th scope="col">Created time</th>
+                        <th scope="col">Link</th>
                     </tr>
                 </thead>
                 <tbody class="table-group-divider">
@@ -44,6 +45,7 @@
                         <td>{{ .Name }}</td>
                         <td>{{ .DocumentQty }}</td>
                         <td>{{ .CreatedTime.Format "2006-01-02 15:04:05" }}</td>
+                        <td><a class="btn btn-primary" href="{{ .URL }}" role="button">Go</a></td>
                     </tr>
                     {{ end }}
                 </tbody>

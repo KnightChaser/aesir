@@ -80,6 +80,7 @@ type CollectionInfo struct {
 	Name        string
 	DocumentQty int64
 	CreatedTime time.Time
+	URL         string
 }
 
 func listCollectionsInfo(db *mongo.Database) ([]CollectionInfo, error) {
@@ -115,11 +116,13 @@ func listCollectionsInfo(db *mongo.Database) ([]CollectionInfo, error) {
 		}
 		createdTime := objectID.Timestamp()
 
+		interactivePageAccessURL := fmt.Sprintf("/inspect/%s", collectionName)
 		// Append collection info to the list
 		info := CollectionInfo{
 			Name:        collectionName,
 			DocumentQty: documentQty,
 			CreatedTime: createdTime,
+			URL:         interactivePageAccessURL,
 		}
 		collectionsInfo = append(collectionsInfo, info)
 	}

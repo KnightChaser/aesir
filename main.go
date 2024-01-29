@@ -25,9 +25,13 @@ func main() {
 	staticSubrouter := muxRouter.PathPrefix("/web/").Subrouter()
 	staticSubrouter.PathPrefix("/").Handler(http.StripPrefix("/web/", http.FileServer(http.Dir("./web"))))
 
-	// Serve /web static files
-	staticEntranceSubrouter := muxRouter.PathPrefix("/web/entrance/").Subrouter()
-	staticEntranceSubrouter.PathPrefix("/").Handler(http.StripPrefix("/web/entrance/", http.FileServer(http.Dir("/web/entrance/"))))
+	// Serve /web/entrance static files
+	staticWebEntranceSubrouter := muxRouter.PathPrefix("/web/entrance/").Subrouter()
+	staticWebEntranceSubrouter.PathPrefix("/").Handler(http.StripPrefix("/web/entrance/", http.FileServer(http.Dir("/web/entrance/"))))
+
+	// Serve /web/inspect static files
+	staticWebInspectSubrouter := muxRouter.PathPrefix("/web/inspect").Subrouter()
+	staticWebInspectSubrouter.PathPrefix("/").Handler(http.StripPrefix("/web/inspect/", http.FileServer(http.Dir("/web/inspect/"))))
 
 	// Serve font files
 	assetSubrouter := muxRouter.PathPrefix("/web/asset/").Subrouter()
@@ -37,6 +41,7 @@ func main() {
 	muxRouter.HandleFunc("/", webRequestHandler.HomeHandler)
 	muxRouter.HandleFunc("/entrance", webRequestHandler.InspectEVTXHandler)
 	muxRouter.HandleFunc("/entrance/upload", webRequestHandler.InspectEVTXUploadHandler)
+	muxRouter.HandleFunc("/inspect", webRequestHandler.InspectEVTXAnalysisHandler)
 
 	// Start the server on port 8080
 	listeningAddressPort := "0.0.0.0:8080"
