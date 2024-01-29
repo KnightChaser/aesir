@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"net/url"
 	"os"
@@ -27,6 +28,40 @@ func API(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(responseJSON)
+}
+
+// Get number of document in the given collection
+func APISearchForDocumentCount(w http.ResponseWriter, r *http.Request) {
+	// Receive API parameters
+	apiParameters := mux.Vars(r)
+	collectionInUse := apiParameters["collection"]
+
+	// Set client options
+	mongoDBURL := os.Getenv("DB_ACCESS_FULL_URL")
+	client := db.ConnectMongoDBSession(mongoDBURL)
+	defer db.DisconnectMongoDBSession(client)
+
+	// Some additional code can be added here to perform operations with the MongoDB client
+	// For example, you can use the 'client' variable to perform CRUD operations.
+	dbname := os.Getenv("DB_NAME")
+	db := client.Database(dbname)
+
+	documentQty, err := db.Collection(collectionInUse).EstimatedDocumentCount(context.Background())
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	jsonResult := map[string]interface{}{
+		"success":     true,
+		"documentQty": documentQty,
+	}
+
+	responseJSON, _ := json.Marshal(jsonResult)
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write(responseJSON)
+
 }
 
 // API for searching some objects with conditions in a particular MongoDB collection
