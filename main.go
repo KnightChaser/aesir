@@ -41,7 +41,7 @@ func main() {
 	muxRouter.HandleFunc("/", webRequestHandler.HomeHandler)
 	muxRouter.HandleFunc("/entrance", webRequestHandler.InspectEVTXHandler)
 	muxRouter.HandleFunc("/entrance/upload", webRequestHandler.InspectEVTXUploadHandler)
-	muxRouter.HandleFunc("/inspect", webRequestHandler.InspectEVTXAnalysisHandler)
+	muxRouter.HandleFunc("/inspect/{collection}", webRequestHandler.InspectEVTXAnalysisHandler)
 	muxRouter.HandleFunc("/api", webRequestHandler.API) // default
 	muxRouter.HandleFunc("/api/search/{collection}/{condition}", webRequestHandler.APISearchWithCondition)
 
