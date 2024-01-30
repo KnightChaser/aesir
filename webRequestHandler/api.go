@@ -90,8 +90,8 @@ func APISearchWithCondition(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Parse the decoded condition into a BSON document
-	var searchCondition bson.M
+	// Parse the decoded condition into a slice of BSON documents
+	var searchCondition []bson.M
 	err = bson.UnmarshalExtJSON([]byte(decodedCondition), true, &searchCondition)
 	if err != nil {
 		responseJSON, _ := json.Marshal(map[string]interface{}{
