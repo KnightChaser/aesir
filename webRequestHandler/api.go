@@ -12,6 +12,7 @@ import (
 
 	"github.com/gorilla/mux"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 // Functions for API testing
@@ -67,8 +68,8 @@ func APISearchForDocumentCount(w http.ResponseWriter, r *http.Request) {
 // API for searching some objects with conditions in a particular MongoDB collection
 // ex) Query db(aesir).C.find({"$and":[{"event.system.eventid": 3}, {"event.eventdata.DestinationIp": "8.8.8.8"}]})
 //
-//	=> localhost:8080/api/search/{mongodb_collection_name}/{mongodb_search_condition_in_JSON}
-//	=> localhost:8080/api/search/C/%7B%22%24and%22%3A%5B%7B%22event.system.eventid%22%3A%203%7D%2C%20%7B%22event.eventdata.DestinationIp%22%3A%20%228.8.8.8%22%7D%5D%7D (URL encoded)
+//	=> localhost:8080/api/search/{mongodb_collection_name}/find/{mongodb_search_condition_in_JSON}
+//	=> localhost:8080/api/search/C/find/%7B%22%24and%22%3A%5B%7B%22event.system.eventid%22%3A%203%7D%2C%20%7B%22event.eventdata.DestinationIp%22%3A%20%228.8.8.8%22%7D%5D%7D (URL encoded)
 //
 // Then it will return the JSONified result data after querying DB like an ordinary API
 func APISearchWithCondition(w http.ResponseWriter, r *http.Request) {
@@ -76,6 +77,7 @@ func APISearchWithCondition(w http.ResponseWriter, r *http.Request) {
 	apiParameters := mux.Vars(r)
 	collectionInUse := apiParameters["collection"]
 	condition := apiParameters["condition"]
+	request := apiParameters["request"]
 
 	// Decode the condition string from the URL
 	decodedCondition, err := url.QueryUnescape(condition)
@@ -108,8 +110,12 @@ func APISearchWithCondition(w http.ResponseWriter, r *http.Request) {
 
 	// Perform the search using the specified condition
 	// The condition will work the same with querying data to the MongoDB console directly; such like db.{collection}.find({"event.system.eventid": 3})
-	cursor, err := collection.Find(context.Background(), searchCondition)
-	if err != nil {
+	var cursor *mongo.Cursor
+	if request == "find" {
+		cursor, err = collection.Find(context.Background(), searchCondition)
+	} else if request == "aggregate" {
+		cursor, err = collection.Aggregate(context.Background(), searchCondition)
+	} else {
 		responseJSON, _ := json.Marshal(map[string]interface{}{
 			"success": false,
 			"result":  fmt.Sprintf("Error executing the query: %v", err),

@@ -44,7 +44,7 @@ func main() {
 	muxRouter.HandleFunc("/inspect/{collection}", webRequestHandler.InspectEVTXAnalysisHandler)
 	muxRouter.HandleFunc("/api", webRequestHandler.API) // default
 	muxRouter.HandleFunc("/api/search/{collection}/documentCount", webRequestHandler.APISearchForDocumentCount)
-	muxRouter.HandleFunc("/api/search/{collection}/{condition}", webRequestHandler.APISearchWithCondition)
+	muxRouter.HandleFunc("/api/search/{collection}/{request}/{condition}", webRequestHandler.APISearchWithCondition)
 
 	// Start the server on port 8080
 	listeningAddressPort := "0.0.0.0:8080"
