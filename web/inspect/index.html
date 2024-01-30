@@ -13,6 +13,8 @@
             src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
             crossorigin="anonymous"></script>
+        <!-- Add Chart.js -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
         <script src="/web/inspect/index.js"></script>
 
         <title>Aesir - System Monitor EVTX File Inspector</title>
@@ -22,7 +24,8 @@
         <!-- navigation bar -->
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
             <div class="container-fluid">
-                <a class="navbar-brand" href="/inspect/{{ .Collection }}">AESIR</a>
+                <a class="navbar-brand"
+                    href="/inspect/{{ .Collection }}">AESIR</a>
                 <button class="navbar-toggler" type="button"
                     data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent"
@@ -34,14 +37,16 @@
                     id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page">Your Current Collection: <b>{{ .Collection }}</b></a>
+                            <a class="nav-link active" aria-current="page">Your
+                                Current Collection: <b>{{ .Collection }}</b></a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page"
                                 href="/entrance">Your EVTX list</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="https://github.com/KnightChaser/aesir">GitHub</a>
+                            <a class="nav-link"
+                                href="https://github.com/KnightChaser/aesir">GitHub</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link disabled"
@@ -59,7 +64,10 @@
                     Number of events<br>
                     <h3 id="number-of-document-number">--</h3>
                 </div>
-                <div class="col-8">col-8</div>
+                <div class="col-8" id="event-id-distribution">
+                    Event ID distribution<br>
+                    <canvas id="event-id-distribution-chart">--</canvas>
+                </div>
             </div>
         </div>
 
