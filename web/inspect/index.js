@@ -63,7 +63,7 @@ async function eventDocumentQtyGetData() {
     try {
         // Search condition for the API (using MongoDB aggregation)
         const searchCondition = [
-            { "$group": { "_id": "$event.system.eventid", "count": { "$sum": 1 } } },
+            { "$group": { "_id": "$event.eventdata.EventName", "count": { "$sum": 1 } } },
             { "$sort": { "count": -1 } }
         ];
 
@@ -79,6 +79,7 @@ async function eventDocumentQtyGetData() {
             const counts = dataJson.map(item => item.count);
 
             // Draw the chart using Chart.js
+            
             const ctx = eventDocumentQtyElement.getContext('2d');
             new Chart(ctx, {
                 type: 'bar',
@@ -89,23 +90,35 @@ async function eventDocumentQtyGetData() {
                         data: counts,
                         backgroundColor: 'rgba(75, 192, 192, 0.2)',
                         borderColor: 'rgba(75, 192, 192, 1)',
-                        borderWidth: 1
+                        borderWidth: 1,
+                        barThickness: 45,
+                        label: '# of events'
                     }]
                 },
                 options: {
                     scales: {
                         y: {
                             beginAtZero: true,
-                            stepSize: 1
+                            stepSize: 1,
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    elements: {
+                        bar: {
+                            borderWidth: 1,
+                            borderColor: 'rgba(0, 0, 0, 1)'
                         }
                     }
                 }
             });
-        } else {
-            console.error('Error: Received null or undefined data from the API');
         }
     } catch (error) {
-        console.error('Error:', error);
+        // Handle errors if needed
+        console.error('Error while drawing chart for eventDocuemtnQtyGetData():', error);
     }
 }
 

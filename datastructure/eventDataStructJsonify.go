@@ -13,6 +13,7 @@ func EventDataStructureJsonify(id int64, stat string) map[string]interface{} {
 
 	switch id {
 	case 1:
+		eventDataStructure["EventName"] = "Process Create"
 		eventDataStructure["CommandLine"] = gjson.Get(stat, "Event.EventData.CommandLine").String()
 		eventDataStructure["Company"] = gjson.Get(stat, "Event.EventData.Company").String()
 		eventDataStructure["CurrentDirectory"] = gjson.Get(stat, "Event.EventData.CurrentDirectory").String()
@@ -39,6 +40,7 @@ func EventDataStructureJsonify(id int64, stat string) map[string]interface{} {
 		break
 
 	case 2:
+		eventDataStructure["EventName"] = "File Creation Time Changed"
 		eventDataStructure["CreationUtcTime"] = gjson.Get(stat, "Event.EventData.CreationUtcTime").Time()
 		eventDataStructure["Image"] = gjson.Get(stat, "Event.EventData.Image").String()
 		eventDataStructure["PreviousCreationUtcTime"] = gjson.Get(stat, "Event.EventData.PreviousCreationUtcTime").Time()
@@ -51,6 +53,7 @@ func EventDataStructureJsonify(id int64, stat string) map[string]interface{} {
 		break
 
 	case 3:
+		eventDataStructure["EventName"] = "Network Connection Detected"
 		eventDataStructure["DestinationHostname"] = gjson.Get(stat, "Event.EventData.DestinationHostname").String()
 		eventDataStructure["DestinationIp"] = gjson.Get(stat, "Event.EventData.DestinationIp").String()
 		eventDataStructure["DestinationIsIpv6"] = gjson.Get(stat, "Event.EventData.DestinationIsIpv6").Bool()
@@ -72,6 +75,7 @@ func EventDataStructureJsonify(id int64, stat string) map[string]interface{} {
 		break
 
 	case 4:
+		eventDataStructure["EventName"] = "Sysmon Service State Changed"
 		eventDataStructure["SchemaVersion"] = gjson.Get(stat, "Event.EventData.SchemaVersion").String()
 		eventDataStructure["State"] = gjson.Get(stat, "Event.EventData.State").String()
 		eventDataStructure["UtcTime"] = gjson.Get(stat, "Event.EventData.UtcTime").Time()
@@ -79,6 +83,7 @@ func EventDataStructureJsonify(id int64, stat string) map[string]interface{} {
 		break
 
 	case 5:
+		eventDataStructure["EventName"] = "Process Terminated"
 		eventDataStructure["Image"] = gjson.Get(stat, "Event.EventData.Image").String()
 		eventDataStructure["ProcessGuid"] = gjson.Get(stat, "Event.EventData.ProcessGuid").String()
 		eventDataStructure["ProcessId"] = gjson.Get(stat, "Event.EventData.ProcessId").Int()
@@ -88,6 +93,7 @@ func EventDataStructureJsonify(id int64, stat string) map[string]interface{} {
 		break
 
 	case 6:
+		eventDataStructure["EventName"] = "Driver Loaded"
 		eventDataStructure["Hashes"] = gjson.Get(stat, "Event.EventData.Hashes").String()
 		eventDataStructure["ImageLoaded"] = gjson.Get(stat, "Event.EventData.ImageLoaded").String()
 		eventDataStructure["RuleName"] = gjson.Get(stat, "Event.EventData.RuleName").String()
@@ -98,6 +104,7 @@ func EventDataStructureJsonify(id int64, stat string) map[string]interface{} {
 		break
 
 	case 7:
+		eventDataStructure["EventName"] = "Image Loaded"
 		eventDataStructure["Company"] = gjson.Get(stat, "Event.EventData.Company").String()
 		eventDataStructure["Description"] = gjson.Get(stat, "Event.EventData.Description").String()
 		eventDataStructure["FileVersion"] = gjson.Get(stat, "Event.EventData.FileVersion").String()
@@ -117,6 +124,7 @@ func EventDataStructureJsonify(id int64, stat string) map[string]interface{} {
 		break
 
 	case 8:
+		eventDataStructure["EventName"] = "CreateRemoteThread Detected"
 		eventDataStructure["NewThreadId"] = gjson.Get(stat, "Event.EventData.NewThreadId").Int()
 		eventDataStructure["RuleName"] = gjson.Get(stat, "Event.EventData.RuleName").String()
 		eventDataStructure["SourceImage"] = gjson.Get(stat, "Event.EventData.SourceImage").String()
@@ -134,6 +142,7 @@ func EventDataStructureJsonify(id int64, stat string) map[string]interface{} {
 		break
 
 	case 9:
+		eventDataStructure["EventName"] = "RawAccessRead Detected"
 		eventDataStructure["Device"] = gjson.Get(stat, "Event.EventData.Device").String()
 		eventDataStructure["Image"] = gjson.Get(stat, "Event.EventData.Image").String()
 		eventDataStructure["ProcessGuid"] = gjson.Get(stat, "Event.EventData.ProcessGuid").String()
@@ -144,6 +153,7 @@ func EventDataStructureJsonify(id int64, stat string) map[string]interface{} {
 		break
 
 	case 10:
+		eventDataStructure["EventName"] = "Process Accessed"
 		eventDataStructure["CallTrace"] = gjson.Get(stat, "Event.EventData.CallTrace").String()
 		eventDataStructure["GrantedAccess"] = gjson.Get(stat, "Event.EventData.GrantedAccess").String()
 		eventDataStructure["RuleName"] = gjson.Get(stat, "Event.EventData.RuleName").String()
@@ -160,6 +170,7 @@ func EventDataStructureJsonify(id int64, stat string) map[string]interface{} {
 		break
 
 	case 11:
+		eventDataStructure["EventName"] = "File Created"
 		eventDataStructure["CreationUtcTime "] = gjson.Get(stat, "Event.EventData.CreationUtcTime").Time()
 		eventDataStructure["Image"] = gjson.Get(stat, "Event.EventData.Image").String()
 		eventDataStructure["ProcessGuid"] = gjson.Get(stat, "Event.EventData.ProcessGuid").Int()
@@ -171,6 +182,7 @@ func EventDataStructureJsonify(id int64, stat string) map[string]interface{} {
 		break
 
 	case 12:
+		eventDataStructure["EventName"] = "Registry Event, Object Create and Delete"
 		eventDataStructure["EventType"] = gjson.Get(stat, "Event.EventData.EventType").String()
 		eventDataStructure["Image"] = gjson.Get(stat, "Event.EventData.Image").String()
 		eventDataStructure["ProcessGuid"] = gjson.Get(stat, "Event.EventData.ProcessGuid").String()
@@ -182,6 +194,7 @@ func EventDataStructureJsonify(id int64, stat string) map[string]interface{} {
 		break
 
 	case 13:
+		eventDataStructure["EventName"] = "Registry Event, Value Set"
 		eventDataStructure["Details"] = gjson.Get(stat, "Event.EventData.Details").String()
 		eventDataStructure["EventType"] = gjson.Get(stat, "Event.EventData.EventType").String()
 		eventDataStructure["Image"] = gjson.Get(stat, "Event.EventData.Image").String()
@@ -194,6 +207,7 @@ func EventDataStructureJsonify(id int64, stat string) map[string]interface{} {
 		break
 
 	case 14:
+		eventDataStructure["EventName"] = "Registry Event, Object renamed"
 		eventDataStructure["EventType"] = gjson.Get(stat, "Event.EventData.EventType").String()
 		eventDataStructure["Image"] = gjson.Get(stat, "Event.EventData.Image").String()
 		eventDataStructure["NewName"] = gjson.Get(stat, "Event.EventData.NewName").String()
@@ -206,6 +220,7 @@ func EventDataStructureJsonify(id int64, stat string) map[string]interface{} {
 		break
 
 	case 15:
+		eventDataStructure["EventName"] = "File Stream Created"
 		eventDataStructure["Contents"] = gjson.Get(stat, "Event.EventData.Contents").String()
 		eventDataStructure["CreationUtcTime"] = gjson.Get(stat, "Event.EventData.CreationUtcTime").Time()
 		eventDataStructure["Hash"] = gjson.Get(stat, "Event.EventData.Hash").String()
@@ -219,12 +234,14 @@ func EventDataStructureJsonify(id int64, stat string) map[string]interface{} {
 		break
 
 	case 16:
+		eventDataStructure["EventName"] = "Sysmon Config State Changed"
 		eventDataStructure["Configuration"] = gjson.Get(stat, "Event.EventData.Configuration").String()
 		eventDataStructure["ConfigurationFileHash"] = gjson.Get(stat, "Event.EventData.ConfigurationFileHash").String()
 		eventDataStructure["UtcTime"] = gjson.Get(stat, "Event.EventData.UtcTime").Time()
 		break
 
 	case 17:
+		eventDataStructure["EventName"] = "Pipe Created"
 		eventDataStructure["EventType"] = gjson.Get(stat, "Event.EventData.EventType").String()
 		eventDataStructure["Image"] = gjson.Get(stat, "Event.EventData.Image").String()
 		eventDataStructure["PipeName"] = gjson.Get(stat, "Event.EventData.PipeName").String()
@@ -236,6 +253,7 @@ func EventDataStructureJsonify(id int64, stat string) map[string]interface{} {
 		break
 
 	case 18:
+		eventDataStructure["EventName"] = "Pipe Connected"
 		eventDataStructure["EventType"] = gjson.Get(stat, "Event.EventData.EventType").String()
 		eventDataStructure["Image"] = gjson.Get(stat, "Event.EventData.Image").String()
 		eventDataStructure["PipeName"] = gjson.Get(stat, "Event.EventData.PipeName").String()
@@ -247,6 +265,7 @@ func EventDataStructureJsonify(id int64, stat string) map[string]interface{} {
 		break
 
 	case 19:
+		eventDataStructure["EventName"] = "WmiEventFilter Activity Detected"
 		eventDataStructure["EventNamespace"] = gjson.Get(stat, "Event.EventData.EventNamespace").String()
 		eventDataStructure["EventType"] = gjson.Get(stat, "Event.EventData.EventType").String()
 		eventDataStructure["Name"] = gjson.Get(stat, "Event.EventData.Name").String()
@@ -258,6 +277,7 @@ func EventDataStructureJsonify(id int64, stat string) map[string]interface{} {
 		break
 
 	case 20:
+		eventDataStructure["EventName"] = "WmiEventConsumer Activity Detected"
 		eventDataStructure["Destination"] = gjson.Get(stat, "Event.EventData.Destination").String()
 		eventDataStructure["EventType"] = gjson.Get(stat, "Event.EventData.EventType").String()
 		eventDataStructure["Name"] = gjson.Get(stat, "Event.EventData.Name").String()
@@ -269,6 +289,7 @@ func EventDataStructureJsonify(id int64, stat string) map[string]interface{} {
 		break
 
 	case 21:
+		eventDataStructure["EventName"] = "WmiEventConsumerToFilter Activity Detected"
 		eventDataStructure["Consumer"] = gjson.Get(stat, "Event.EventData.Consumer").String()
 		eventDataStructure["EventType"] = gjson.Get(stat, "Event.EventData.EventType").String()
 		eventDataStructure["Filter"] = gjson.Get(stat, "Event.EventData.Filter").String()
@@ -279,6 +300,7 @@ func EventDataStructureJsonify(id int64, stat string) map[string]interface{} {
 		break
 
 	case 22:
+		eventDataStructure["EventName"] = "DNS Query"
 		eventDataStructure["Image"] = gjson.Get(stat, "Event.EventData.Image").String()
 		eventDataStructure["ProcessGuid"] = gjson.Get(stat, "Event.EventData.ProcessGuid").String()
 		eventDataStructure["ProcessId"] = gjson.Get(stat, "Event.EventData.ProcessId").Int()
@@ -291,6 +313,7 @@ func EventDataStructureJsonify(id int64, stat string) map[string]interface{} {
 		break
 
 	case 23:
+		eventDataStructure["EventName"] = "File Delete Archived"
 		eventDataStructure["Archived"] = gjson.Get(stat, "Event.EventData.Archived").String()
 		eventDataStructure["Hashes"] = gjson.Get(stat, "Event.EventData.Hashes").String()
 		eventDataStructure["Image"] = gjson.Get(stat, "Event.EventData.Image").String()
@@ -304,6 +327,7 @@ func EventDataStructureJsonify(id int64, stat string) map[string]interface{} {
 		break
 
 	case 24:
+		eventDataStructure["EventName"] = "Clipboard Change"
 		eventDataStructure["Archived"] = gjson.Get(stat, "Event.EventData.Archived").Bool()
 		eventDataStructure["ClientInfo"] = gjson.Get(stat, "Event.EventData.ClientInfo").String()
 		eventDataStructure["Hashes"] = gjson.Get(stat, "Event.EventData.Hashes").String()
@@ -317,6 +341,7 @@ func EventDataStructureJsonify(id int64, stat string) map[string]interface{} {
 		break
 
 	case 25:
+		eventDataStructure["EventName"] = "Process Tampering"
 		eventDataStructure["RuleName"] = gjson.Get(stat, "Event.EventData.RuleName").String()
 		eventDataStructure["UtcTime"] = gjson.Get(stat, "Event.EventData.UtcTime").Time()
 		eventDataStructure["ProcessGuid"] = gjson.Get(stat, "Event.EventData.ProcessGuid").String()
@@ -327,6 +352,7 @@ func EventDataStructureJsonify(id int64, stat string) map[string]interface{} {
 		break
 
 	case 26:
+		eventDataStructure["EventName"] = "File Delete Logged"
 		eventDataStructure["Hashes"] = gjson.Get(stat, "Event.EventData.Hashes").String()
 		eventDataStructure["Image"] = gjson.Get(stat, "Event.EventData.Image").String()
 		eventDataStructure["IsExecutable"] = gjson.Get(stat, "Event.EventData.IsExecutable").String()
@@ -339,6 +365,7 @@ func EventDataStructureJsonify(id int64, stat string) map[string]interface{} {
 		break
 
 	case 27:
+		eventDataStructure["EventName"] = "File Block Executable"
 		eventDataStructure["RuleName"] = gjson.Get(stat, "Event.EventData.RuleName").String()
 		eventDataStructure["UtcTime"] = gjson.Get(stat, "Event.EventData.UtcTime").Time()
 		eventDataStructure["ProcessGuid"] = gjson.Get(stat, "Event.EventData.ProcessGuid").String()
@@ -350,6 +377,7 @@ func EventDataStructureJsonify(id int64, stat string) map[string]interface{} {
 		break
 
 	case 28:
+		eventDataStructure["EventName"] = "File Block Shredding"
 		eventDataStructure["RuleName"] = gjson.Get(stat, "Event.EventData.RuleName").String()
 		eventDataStructure["UtcTime"] = gjson.Get(stat, "Event.EventData.UtcTime").Time()
 		eventDataStructure["ProcessGuid"] = gjson.Get(stat, "Event.EventData.ProcessGuid").String()
@@ -362,6 +390,7 @@ func EventDataStructureJsonify(id int64, stat string) map[string]interface{} {
 		break
 
 	case 29:
+		eventDataStructure["EventName"] = "Executable Blocked"
 		eventDataStructure["RuleName"] = gjson.Get(stat, "Event.EventData.RuleName").String()
 		eventDataStructure["UtcTime"] = gjson.Get(stat, "Event.EventData.UtcTime").Time()
 		eventDataStructure["ProcessGuid"] = gjson.Get(stat, "Event.EventData.ProcessGuid").String()
