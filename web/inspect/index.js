@@ -45,11 +45,28 @@ async function fetchCollectionDocumentQty(collectionInUse) {
 }
 
 // Get the number of documents in the current collection
+// Using animation to show the number of documents (from 0 to the actual number, for pretty display)
 async function collectionDocumentQtyGetData() {
     try {
         const data = await fetchCollectionDocumentQty(currentCollection);
         const numberOfDocumentsElement = document.getElementById("number-of-document-number");
-        numberOfDocumentsElement.textContent = data.toLocaleString();
+        const startValue = 0;
+        const endValue = data;
+        const duration = 1000; // Animation duration in milliseconds
+        const frameRate = 30; // Number of frames per second
+
+        const increment = (endValue - startValue) / (duration / 1000 * frameRate);
+        let currentValue = startValue;
+
+        const counterInterval = setInterval(() => {
+            currentValue += increment;
+            numberOfDocumentsElement.textContent = Math.round(currentValue).toLocaleString();
+
+            if (currentValue >= endValue) {
+                numberOfDocumentsElement.textContent = endValue.toLocaleString();
+                clearInterval(counterInterval);
+            }
+        }, 1000 / frameRate);
     } catch (error) {
         // Handle errors if needed
         console.error('Error:', error);
@@ -88,6 +105,72 @@ async function collectionDocumentOverallMetadata() {
         const endingTimestamp = new Date(dataJSONEnd[0]["event"]["system"]["timecreated"]["systemtime"]);
         const formattedEndingTimestamp = endingTimestamp.toISOString().replace(/T/, ' ').replace(/\..+/, '');
         timestampEndElementString.textContent = formattedEndingTimestamp;
+
+        // Search condition for the API (using MongoDB aggregation); get the computer name of the current EVTX file
+        const searchConditionComputerName = [
+            {
+                $group: {
+                    _id: "$event.system.computer",
+                    uniqueComputers: { $addToSet: "$event.system.computer" }
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    uniqueComputers: 1
+                }
+            }
+        ];
+
+        const dataComputerName = JSON.parse(await fetchEventData(currentCollection, "aggregate", JSON.stringify(searchConditionComputerName)));
+        let dataComputerNameString = "";
+        dataComputerName.forEach(row => {
+            dataComputerNameString += row["uniqueComputers"].toString();
+            dataComputerNameString += "\n";
+        });
+        document.getElementById("event-captured-computer-name").textContent = dataComputerNameString;
+
+        // Search condition for the API (using MongoDB aggregation); get channel names of the current EVTX file
+        const searchConditionChannelName = [
+            {
+                $group: {
+                    _id: "$event.system.channel",
+                    uniqueChannels: { $addToSet: "$event.system.channel" }
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    uniqueChannels: 1
+                }
+            }
+        ];
+
+        const dataChannelName = JSON.parse(await fetchEventData(currentCollection, "aggregate", JSON.stringify(searchConditionChannelName)));
+        document.getElementById("event-channel-name").textContent = dataChannelName[0]["uniqueChannels"].toString();
+
+        // Search condition for the API (using MongoDB aggregation); get the information of provider
+        const searchConditionProvider = [
+            {
+                $group: {
+                    _id: "$event.system.provider",
+                    uniqueProviders: { $addToSet: "$event.system.provider" }
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    uniqueProviders: 1
+                }
+            }
+        ];
+
+        const dataProvider = JSON.parse(await fetchEventData(currentCollection, "aggregate", JSON.stringify(searchConditionProvider)));
+        let dataProviderString = "";
+        dataProviderString += dataProvider[0]["uniqueProviders"][0]["name"] + '<br>';
+        dataProviderString += " (GUID: <code>" + dataProvider[0]["uniqueProviders"][0]["guid"] + "</code>)";
+        document.getElementById("event-tool-provider").innerHTML = dataProviderString;
+
     } catch (error) {
         // Handle errors if needed
         console.error('Error:', error);
@@ -117,7 +200,7 @@ async function eventDocumentQtyGetData() {
             const counts = dataJson.map(item => item.count);
 
             // Draw the chart using Chart.js
-            
+
             const ctx = eventDocumentQtyElement.getContext('2d');
             new Chart(ctx, {
                 type: 'bar',
@@ -143,7 +226,7 @@ async function eventDocumentQtyGetData() {
                     plugins: {
                         legend: {
                             display: false,
-                            labels : {
+                            labels: {
                                 font: {
                                     family: 'IBMPlexSans',
                                 }
