@@ -58,6 +58,44 @@ async function collectionDocumentQtyGetData() {
 
 collectionDocumentQtyGetData();
 
+// Get basic information of the current EVTX file
+async function collectionDocumentOverallMetadata() {
+    try {
+        // Search condition for the API (using MongoDB aggregation); start with the first document
+        const searchConditionStart = [
+            { $sort: { "event.system.timecreated.systemtime": 1 } },
+            { $limit: 1 }
+        ];
+
+        const dataStart = await fetchEventData(currentCollection, "aggregate", JSON.stringify(searchConditionStart));
+        const timestampStartElementString = document.getElementById("event-starting-timestamp");
+        const dataJSONStart = JSON.parse(dataStart);
+        // Convert the timestamp to ISO format
+        const startingTimestamp = new Date(dataJSONStart[0]["event"]["system"]["timecreated"]["systemtime"]);
+        const formattedStartingTimestamp = startingTimestamp.toISOString().replace(/T/, ' ').replace(/\..+/, '');
+        timestampStartElementString.textContent = formattedStartingTimestamp;
+
+        // Search condition for the API (using MongoDB aggregation); end with the last document
+        const searchConditionEnd = [
+            { $sort: { "event.system.timecreated.systemtime": -1 } },
+            { $limit: 1 }
+        ];
+
+        const dataEnd = await fetchEventData(currentCollection, "aggregate", JSON.stringify(searchConditionEnd));
+        const timestampEndElementString = document.getElementById("event-ending-timestamp");
+        const dataJSONEnd = JSON.parse(dataEnd);
+        // Convert the timestamp to ISO format
+        const endingTimestamp = new Date(dataJSONEnd[0]["event"]["system"]["timecreated"]["systemtime"]);
+        const formattedEndingTimestamp = endingTimestamp.toISOString().replace(/T/, ' ').replace(/\..+/, '');
+        timestampEndElementString.textContent = formattedEndingTimestamp;
+    } catch (error) {
+        // Handle errors if needed
+        console.error('Error:', error);
+    }
+}
+
+collectionDocumentOverallMetadata();
+
 // Get the number of documents per event type and draw the chart with chart.js
 async function eventDocumentQtyGetData() {
     try {
