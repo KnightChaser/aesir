@@ -71,7 +71,6 @@ func InspectEVTXUploadHandler(w http.ResponseWriter, r *http.Request) {
 	dbname := os.Getenv("DB_NAME")
 	db := client.Database(dbname)
 	collection := db.Collection(dbCollectionName)
-	fmt.Println(collection)
 
 	// Sysmon(System Monitor) log file in Windows
 	stats, err := sentinela.ParseEVTX(filename)
