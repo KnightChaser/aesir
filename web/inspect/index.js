@@ -358,3 +358,4 @@ async function imageDistributionDrawChart(searchConditionFieldName, tableElement
 imageDistributionDrawChart("event.eventdata.SourceImage", "source-image-distribution-table");
 imageDistributionDrawChart("event.eventdata.TargetImage", "target-image-distribution-table");
 imageDistributionDrawChart("event.eventdata.TargetUser", "target-user-distribution-table");
+imageDistributionDrawChart("event.eventdata.SourceUser", "source-user-distribution-table");
