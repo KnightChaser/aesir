@@ -38,8 +38,27 @@ document.getElementById('upload_button').addEventListener('click', function () {
             cancelButtonText: 'Cancel'
         }).then((result) => {
             if (result.isConfirmed) {
+            
+                // Show progress to the user with a toast
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    iconColor: 'white',
+                    showConfirmButton: false,
+                    timer: 2000,
+                    timerProgressBar: true
+                });
+
+                (async () => {
+                    await Toast.Fire({
+                        icon: 'info',
+                        title: 'Uploading file...'
+                    })
+                })()
+
                 // Proceed with form submission
                 document.getElementById('uploadForm').submit();
+                
             }
         });
     }

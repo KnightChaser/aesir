@@ -93,7 +93,11 @@ func InspectEVTXUploadHandler(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			log.Fatal(err)
 		}
+
 		fmt.Printf("[+] EVTX event (%v) registered to %s/%s/%s\n", response, mongoDBURL, dbname, dbCollectionName)
 	}
+
+	// Redirect user to the page letting them know the file was uploaded successfully
+	http.Redirect(w, r, "/web/entrance/upload_sysmon_evtx_successful.html", http.StatusSeeOther)
 
 }
