@@ -14,6 +14,26 @@
             integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
             crossorigin="anonymous"></script>
 
+        <!-- jQuery -->
+        <script
+            src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+
+        <!-- Add Selectize CSS and JS links -->
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.15.2/css/selectize.default.min.css"
+            integrity="sha512-pTaEn+6gF1IeWv3W1+7X7eM60TFu/agjgoHmYhAfLEU8Phuf6JKiiE8YmsNC0aCgQv4192s4Vai8YZ6VNM6vyQ=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer" />
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.15.2/js/selectize.min.js"
+            integrity="sha512-IOebNkvA/HZjMM7MxL0NYeLYEalloZ8ckak+NDtOViP7oiYzG5vn6WVXyrJDiJPhl4yRdmNAG49iuLmhkUdVsQ=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"></script>
+
+        <!-- Self API -->
+        <script src="/web/asset/api/fetchEventData.js"></script>
+
         <title>Aesir - System Monitor EVTX File Inspector</title>
     </head>
     <body>
@@ -72,7 +92,19 @@
                 </div>
             </div>
             <!-- search(filter) form -->
-        </div>
+            <div class="row">
+                <div class="col-3">
+                    <p>Source images</p>
+                </div>
+                <div class="col">
+                    <select id="source-image-selectize-tab"
+                        class="selectize-tab"
+                        placeholder="Pick some source image(s)..."></select>
+                </div>
+            </div>
 
-    </body>
-</html>
+            <script src="/web/search/selectize.js"></script>
+            <link rel="stylesheet" href="/web/search/selectize.css">
+
+        </body>
+    </html>
