@@ -49,7 +49,7 @@ async function collectionDocumentQtyGetData() {
     try {
         const data = await fetchCollectionDocumentQty(currentCollection);
         const numberOfDocumentsElement = document.getElementById("number-of-document-number");
-        numberOfDocumentsElement.textContent = data;
+        numberOfDocumentsElement.textContent = data.toLocaleString();
     } catch (error) {
         // Handle errors if needed
         console.error('Error:', error);
@@ -104,7 +104,12 @@ async function eventDocumentQtyGetData() {
                     },
                     plugins: {
                         legend: {
-                            display: false
+                            display: false,
+                            labels : {
+                                font: {
+                                    family: 'IBMPlexSans',
+                                }
+                            }
                         }
                     },
                     elements: {
