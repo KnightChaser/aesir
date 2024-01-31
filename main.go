@@ -33,6 +33,10 @@ func main() {
 	staticWebInspectSubrouter := muxRouter.PathPrefix("/web/inspect").Subrouter()
 	staticWebInspectSubrouter.PathPrefix("/").Handler(http.StripPrefix("/web/inspect/", http.FileServer(http.Dir("/web/inspect/"))))
 
+	// Serve /web/search sftatic files
+	staticWebSearchSubrouter := muxRouter.PathPrefix("/web/search").Subrouter()
+	staticWebSearchSubrouter.PathPrefix("/").Handler(http.StripPrefix("/web/search/", http.FileServer(http.Dir("/web/search/"))))
+
 	// Serve font files
 	assetSubrouter := muxRouter.PathPrefix("/web/asset/").Subrouter()
 	assetSubrouter.PathPrefix("/font/").Handler(http.StripPrefix("/web/asset/font/", http.FileServer(http.Dir("/web/asset/font/"))))
@@ -42,6 +46,7 @@ func main() {
 	muxRouter.HandleFunc("/entrance", webRequestHandler.InspectEVTXHandler)
 	muxRouter.HandleFunc("/entrance/upload", webRequestHandler.InspectEVTXUploadHandler)
 	muxRouter.HandleFunc("/inspect/{collection}", webRequestHandler.InspectEVTXAnalysisHandler)
+	muxRouter.HandleFunc("/search/{collection}", webRequestHandler.SearchHandler)
 	muxRouter.HandleFunc("/api", webRequestHandler.API) // default
 	muxRouter.HandleFunc("/api/search/{collection}/documentCount", webRequestHandler.APISearchForDocumentCount)
 	muxRouter.HandleFunc("/api/search/{collection}/{request}/{condition}", webRequestHandler.APISearchWithCondition)

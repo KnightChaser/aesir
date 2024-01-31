@@ -47,6 +47,14 @@
                                 href="/entrance">Your EVTX list</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link active" aria-current="page"
+                                href="/inspect/{{ .Collection }}">Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page"
+                                href="/search/{{ .Collection }}">Search</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link"
                                 href="https://github.com/KnightChaser/aesir">GitHub</a>
                         </li>
@@ -122,8 +130,6 @@
                     <div class="col">
                         <b><p>Target user distribution</p></b>
                         <div id="target-user-distribution-table"></div>
-                        <b><p>Source user distribution</p></b>
-                        <div id="source-user-distribution-table"></div>
                     </div>
                 </div>
             </div>            
