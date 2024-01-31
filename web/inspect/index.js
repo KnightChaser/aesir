@@ -282,7 +282,7 @@ async function imageDistributionDrawChart(searchConditionFieldName, tableElement
 
         // Initialize bootstrap tooltip
         const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 
         // Create bootstrap table based on the information(labels and counts)
         const target = document.getElementById(tableElementId);
@@ -305,6 +305,8 @@ const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstra
         // Create table body
         const tbody = document.createElement('tbody');
 
+        const totalCount = dataJSON.reduce((accumulator, currentValue) => accumulator + currentValue.count, 0);
+
         dataJSON.forEach(row => {
             const sourceImageFullPath = row["sourceImage"];
             const sourceImageExecutableName = sourceImageFullPath.split('\\').pop();
@@ -320,9 +322,19 @@ const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstra
             dataCell1.appendChild(tooltip);
 
             const dataCell2 = document.createElement('td');
-            dataCell2.textContent = count.toLocaleString('en-US', { style: 'decimal' });
+            const percentage = (count / totalCount) * 100;
 
-            dataCell2.style.textAlign = 'right'; // Right align the cell
+            // Create a div to wrap the content
+            const contentWrapper = document.createElement('div');
+            contentWrapper.textContent = count.toLocaleString('en-US', { style: 'decimal' });
+            contentWrapper.style.width = percentage + '%';
+            
+            // Style the wrapper
+            contentWrapper.style.backgroundColor = '#DBF2F2';
+            contentWrapper.style.textAlign = 'right'; // Align the content to the right
+            
+            // Append the wrapper to the cell
+            dataCell2.appendChild(contentWrapper);
 
             dataRow.appendChild(dataCell1);
             dataRow.appendChild(dataCell2);
@@ -345,3 +357,4 @@ const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstra
 
 imageDistributionDrawChart("event.eventdata.SourceImage", "source-image-distribution-table");
 imageDistributionDrawChart("event.eventdata.TargetImage", "target-image-distribution-table");
+imageDistributionDrawChart("event.eventdata.TargetUser", "target-user-distribution-table");
