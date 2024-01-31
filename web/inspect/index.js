@@ -180,7 +180,7 @@ async function collectionDocumentOverallMetadata() {
 collectionDocumentOverallMetadata();
 
 // Get the number of documents per event type and draw the chart with chart.js
-async function eventDocumentQtyGetData() {
+async function eventDocumentQtyDrawChart() {
     try {
         // Search condition for the API (using MongoDB aggregation)
         const searchCondition = [
@@ -248,6 +248,100 @@ async function eventDocumentQtyGetData() {
     }
 }
 
+eventDocumentQtyDrawChart();
+
+// Get source image distribution per event ID and draw the chart with chart.js
+async function imageDistributionDrawChart(searchConditionFieldName, tableElementId) {
+    try {
+        const searchCondition = [
+            {
+                $match: {
+                    [searchConditionFieldName]: { $ne: null }
+                }
+            },
+            {
+                $group: {
+                    _id: "$" + [searchConditionFieldName],
+                    count: { $sum: 1 }
+                }
+            },
+            {
+                $sort: { count: -1 }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    sourceImage: "$_id",
+                    count: 1
+                }
+            },
+        ];
+
+        const data = await fetchEventData(currentCollection, "aggregate", JSON.stringify(searchCondition));
+        const dataJSON = JSON.parse(data);
+
+        // Initialize bootstrap tooltip
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+
+        // Create bootstrap table based on the information(labels and counts)
+        const target = document.getElementById(tableElementId);
+        const table = document.createElement('table');
+        table.classList.add('table', 'table-hover'); // Add Bootstrap table classes
+
+        // Create table header
+        const thead = document.createElement('thead');
+        const headerRow = document.createElement('tr');
+        headerRow.classList.add('table-info');
+        const headerCell1 = document.createElement('th');
+        headerCell1.textContent = 'Executable Name';
+        const headerCell2 = document.createElement('th');
+        headerCell2.textContent = 'Count';
+        headerRow.appendChild(headerCell1);
+        headerRow.appendChild(headerCell2);
+        thead.appendChild(headerRow);
+        table.appendChild(thead);
+
+        // Create table body
+        const tbody = document.createElement('tbody');
+
+        dataJSON.forEach(row => {
+            const sourceImageFullPath = row["sourceImage"];
+            const sourceImageExecutableName = sourceImageFullPath.split('\\').pop();
+            const count = row["count"];
+
+            const dataRow = document.createElement('tr');
+            const dataCell1 = document.createElement('td');
+            const tooltip = document.createElement('span');
+            tooltip.setAttribute('data-bs-toggle', 'tooltip');
+            tooltip.setAttribute('data-bs-placement', 'top');
+            tooltip.setAttribute('title', sourceImageFullPath);
+            tooltip.innerHTML = "<code>" + sourceImageExecutableName + "</code>";
+            dataCell1.appendChild(tooltip);
+
+            const dataCell2 = document.createElement('td');
+            dataCell2.textContent = count.toLocaleString('en-US', { style: 'decimal' });
+
+            dataCell2.style.textAlign = 'right'; // Right align the cell
+
+            dataRow.appendChild(dataCell1);
+            dataRow.appendChild(dataCell2);
+
+            tbody.appendChild(dataRow);
+        });
+
+        table.appendChild(tbody);
+
+        // Append the table to the target element
+        target.appendChild(table);
 
 
-eventDocumentQtyGetData();
+
+    } catch (error) {
+        // Handle errors if needed
+        console.error('Error:', error);
+    }
+}
+
+imageDistributionDrawChart("event.eventdata.SourceImage", "source-image-distribution-table");
+imageDistributionDrawChart("event.eventdata.TargetImage", "target-image-distribution-table");
