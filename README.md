@@ -16,3 +16,5 @@ You can upload your own Sysmon EVTX file with your own name
 ![1](./_readme_pictures/1.png)
 Based on **MongoDB**, Your EVTX data will be structurally managed.
 ![2](./_readme_pictures/2.png)
+Main page to get overall insight of your EVTX
+![3](./_readme_pictures/3.png)
