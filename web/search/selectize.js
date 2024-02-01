@@ -45,13 +45,9 @@ function selectizeTabSourceImages() {
                 item: function (item, escape) {
                     return (
                         "<div>" +
-                        (item.sourceImage
-                            ? '<span>' + escape(item.sourceImagesAbbreviated) + "</span>"
-                            : "") +
-                        (item.count
-                            ? ' <span>(' + escape(item.count) + " matches)</span>"
-                            : "") +
-                        "</div>"
+                        "<span>" + escape(item.sourceImagesAbbreviated) + "</span>" +
+                        " <span>(" + escape(item.count) + " matches)</span>" +
+                    "</div>"
                     );
                 },
                 option: function (item, escape) {
@@ -130,12 +126,8 @@ function selectizeTabTargetImages() {
                 item: function (item, escape) {
                     return (
                         "<div>" +
-                        (item.sourceImage
-                            ? '<span>' + escape(item.targetImagesAbbreviated) + "</span>"
-                            : "") +
-                        (item.count
-                            ? ' <span>(' + escape(item.count) + " matches)</span>"
-                            : "") +
+                            "<span>" + escape(item.targetImagesAbbreviated) + "</span>" +
+                            " <span>(" + escape(item.count) + " matches)</span>" +
                         "</div>"
                     );
                 },
@@ -143,7 +135,7 @@ function selectizeTabTargetImages() {
                     return (
                         "<div>" +
                         '<span class="label"><b>' +
-                        escape(item.targetImagesAbbreviated) +
+                        escape(item.targetImagesAbbreviateds) +
                         "</b><br>" +
                         "</span>" +
                         '<span class="caption">' + escape(item.count) + " matches" + "<br>" +
