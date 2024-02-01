@@ -84,6 +84,7 @@
 
         <!-- main components -->
         <div class="container">
+            <br>
             <div class="row">
                 <div class="col text-center">
                     <h1>Search</h1>
@@ -92,25 +93,26 @@
                 </div>
             </div>
             <!-- search(filter) form -->
-            
-            <div class="row">
-                <div class="col-3">
-                    <p>Source images</p>
+            <div id="search-form">
+                <div class="row">
+                    <div class="col-3">
+                        <p>Source images</p>
+                    </div>
+                    <div class="col">
+                        <select multiple id="source-image-selectize-tab"
+                            class="selectize-tab"
+                            placeholder="Pick some source image(s)..."></select>
+                    </div>
                 </div>
-                <div class="col">
-                    <select multiple id="source-image-selectize-tab"
-                        class="selectize-tab"
-                        placeholder="Pick some source image(s)..."></select>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-3">
-                    <p>Target images</p>
-                </div>
-                <div class="col">
-                    <select multiple id="target-image-selectize-tab"
-                        class="selectize-tab"
-                        placeholder="Pick some target image(s)..."></select>
+                <div class="row">
+                    <div class="col-3">
+                        <p>Target images</p>
+                    </div>
+                    <div class="col">
+                        <select multiple id="target-image-selectize-tab"
+                            class="selectize-tab"
+                            placeholder="Pick some target image(s)..."></select>
+                    </div>
                 </div>
             </div>
 
