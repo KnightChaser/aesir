@@ -400,6 +400,12 @@ func EventDataStructureJsonify(id int64, stat string) map[string]interface{} {
 		eventDataStructure["TargetFilename"] = gjson.Get(stat, "Event.EventData.TargetFilename").String()
 		eventDataStructure["Hashes"] = gjson.Get(stat, "Event.EventData.Hashes").String()
 
+	case 255:
+		eventDataStructure["EventName"] = "Error Report"
+		eventDataStructure["UtcTime"] = gjson.Get(stat, "Event.EventData.UtcTime").Time()
+		eventDataStructure["Id"] = gjson.Get(stat, "Event.EventData.ID").Int()
+		eventDataStructure["Description"] = gjson.Get(stat, "Event.EventData.Description").String()
+
 	default:
 		log.Panic(fmt.Sprintf("ID %d received; seems to be invalid Sysmon EVTX file.\n", id))
 	}
