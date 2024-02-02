@@ -114,20 +114,34 @@
                             placeholder="Pick some target image(s)..."></select>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-3">
+                        <p>Rule name to filter</p>
+                    </div>
+                    <div class="col">
+                        <select multiple id="rule-name-selectize-tab"
+                            class="selectize-tab"
+                            placeholder="Pick some rule(s) to filter..."></select>
+                    </div>
+                </div>
                 <!-- date and timestamp selection tab -->
                 <div class="row">
                     <div class="col-3">
                         <p>Starting date and time</p>
                     </div>
                     <div class="col">
-                        <input type="datetime-local" id="start-datetime" class="form-control">
+                        <input type="datetime-local" id="starting-datetime" class="form-control">
                     </div>
                     <div class="col-3">
                         <p>Ending date and time</p>
                     </div>
                     <div class="col">
-                        <input type="datetime-local" id="end-datetime" class="form-control">
+                        <input type="datetime-local" id="ending-datetime" class="form-control">
                     </div>
+                </div>
+                <br>
+                <div class="col text-center">
+                    <button type="submit" class="btn btn-primary" id="search-form-submit-button">Search</button>
                 </div>
             </div>
 
