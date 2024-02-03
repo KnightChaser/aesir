@@ -50,6 +50,7 @@ func main() {
 	muxRouter.HandleFunc("/api", webRequestHandler.API) // default
 	muxRouter.HandleFunc("/api/search/{collection}/documentCount", webRequestHandler.APISearchForDocumentCount)
 	muxRouter.HandleFunc("/api/search/{collection}/{request}/{condition}", webRequestHandler.APISearchWithCondition)
+	muxRouter.HandleFunc("/api/searchMultipleCondition/{collection}/{condition}", webRequestHandler.APISearchWithMultipleCondition)
 
 	// Start the server on port 8080
 	listeningAddressPort := "0.0.0.0:8080"

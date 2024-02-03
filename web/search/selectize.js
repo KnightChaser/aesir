@@ -47,7 +47,7 @@ function selectizeTabSourceImages() {
                         "<div>" +
                         "<span>" + escape(item.sourceImagesAbbreviated) + "</span>" +
                         " <span>(" + escape(item.count) + " matches)</span>" +
-                    "</div>"
+                        "</div>"
                     );
                 },
                 option: function (item, escape) {
@@ -110,7 +110,7 @@ function selectizeTabTargetImages() {
 
     fetchEventData(currentCollection, "aggregate", JSON.stringify(searchConditionTargetImages)).then((data) => {
         let targetImageStatistics = JSON.parse(data);
-        
+
         targetImageStatistics.forEach((item, index) => {
             targetImageStatistics[index].targetImagesAbbreviated = targetImageStatistics[index].targetImage.split('\\').pop();
         });
@@ -126,8 +126,8 @@ function selectizeTabTargetImages() {
                 item: function (item, escape) {
                     return (
                         "<div>" +
-                            "<span>" + escape(item.targetImagesAbbreviated) + "</span>" +
-                            " <span>(" + escape(item.count) + " matches)</span>" +
+                        "<span>" + escape(item.targetImagesAbbreviated) + "</span>" +
+                        " <span>(" + escape(item.count) + " matches)</span>" +
                         "</div>"
                     );
                 },
@@ -203,8 +203,8 @@ function selectizeTabRuleName() {
                 item: function (item, escape) {
                     return (
                         "<div>" +
-                            "<span>" + escape(item.ruleName) + "</span>" +
-                            " <span>(" + escape(item.count) + " matches)</span>" +
+                        "<span>" + escape(item.ruleName) + "</span>" +
+                        " <span>(" + escape(item.count) + " matches)</span>" +
                         "</div>"
                     );
                 },
@@ -243,9 +243,40 @@ selectizeTabRuleName();
 // If button (id = "search-form-submit-button") is clicked, print the selected values of the selectize.js dropdowns
 // Also, get the values of date range picker
 $("#search-form-submit-button").click(function () {
-    console.log("Source Image: " + $("#source-image-selectize-tab").val());
-    console.log("Target Image: " + $("#target-image-selectize-tab").val());
-    console.log("Rule Name: " + $("#rule-name-selectize-tab").val());
-    console.log("Date Range (start): " + $("#starting-datetime").val());
-    console.log("Date Range (end): " + $("#ending-datetime").val());
+    let sourceImageSelected = $("#source-image-selectize-tab").val();
+    let targetImageSelected = $("#target-image-selectize-tab").val();
+    let ruleNameSelected = $("#rule-name-selectize-tab").val();
+    let dateRangeStart = $("#starting-datetime").val();
+    let dateRangeEnd = $("#ending-datetime").val();
+
+    let searchCondition = {
+        $and: []
+    };
+
+    if (sourceImageSelected.length > 0)
+        searchCondition.$and.push({ "event.eventdata.SourceImage": { $in: sourceImageSelected } });
+
+    if (targetImageSelected.length > 0)
+        searchCondition.$and.push({ "event.eventdata.TargetImage": { $in: targetImageSelected } });
+
+    if (ruleNameSelected.length > 0)
+        searchCondition.$and.push({ "event.eventdata.RuleName": { $in: ruleNameSelected } });
+
+    if (dateRangeStart.length > 0 && dateRangeEnd.length > 0)
+        searchCondition.$and.push({ "event.eventdata.TimeGenerated": { $gte: dateRangeStart, $lte: dateRangeEnd } });
+
+    // If no search condition is selected, fire a SweetAlert2 error message
+    if (searchCondition.$and.length === 0) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Search Condition Error',
+            text: 'Please select at least one search condition!',
+        });
+        return;
+    }
+
+    fetchEventDataMultipleCondition(currentCollection, JSON.stringify(searchCondition)).then((data) => {
+        let searchResult = JSON.parse(data);
+        console.log(searchResult);
+    });
 });

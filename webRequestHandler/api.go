@@ -164,3 +164,95 @@ func APISearchWithCondition(w http.ResponseWriter, r *http.Request) {
 	w.Write(responseJSON)
 
 }
+
+// API for searching some objects with multiple conditions in a particular MongoDB collection
+func APISearchWithMultipleCondition(w http.ResponseWriter, r *http.Request) {
+	// Receive API parameters
+	apiParameters := mux.Vars(r)
+	collectionInUse := apiParameters["collection"]
+	condition := apiParameters["condition"]
+
+	// Decode the condition string from the URL
+	decodedCondition, err := url.QueryUnescape(condition)
+	if err != nil {
+		responseJSON, _ := json.Marshal(map[string]interface{}{
+			"success": false,
+			"result":  "Error decoding the search condition",
+		})
+		http.Error(w, string(responseJSON), http.StatusBadRequest)
+		return
+	}
+
+	var searchCondition map[string][]bson.M
+
+	// Parse the decoded condition into a slice of BSON documents
+	err = json.Unmarshal([]byte(decodedCondition), &searchCondition)
+
+	if err != nil {
+		responseJSON, _ := json.Marshal(map[string]interface{}{
+			"success": false,
+			"result":  fmt.Sprintf("Error parsing the search condition: %v", err),
+		})
+		http.Error(w, string(responseJSON), http.StatusBadRequest)
+		return
+	}
+
+	// Set client options
+	mongoDBURL := os.Getenv("DB_ACCESS_FULL_URL")
+	client := db.ConnectMongoDBSession(mongoDBURL)
+	defer db.DisconnectMongoDBSession(client)
+	collection := client.Database(os.Getenv("DB_NAME")).Collection(collectionInUse)
+
+	// Perform the search using the specified condition
+	// The condition will work the same with querying data to the MongoDB console directly; such like db.{collection}.find({"event.system.eventid": 3})
+	var cursor *mongo.Cursor
+	cursor, err = collection.Find(context.Background(), searchCondition)
+	if err != nil {
+		responseJSON, _ := json.Marshal(map[string]interface{}{
+			"success": false,
+			"result":  fmt.Sprintf("Error executing the query: %v", err),
+		})
+		http.Error(w, string(responseJSON), http.StatusInternalServerError)
+		return
+	}
+	defer cursor.Close(context.Background())
+
+	// Iterate through the results and write them to the response
+	var results []bson.M
+	for cursor.Next(context.Background()) {
+		var result bson.M
+		err := cursor.Decode(&result)
+		if err != nil {
+			responseJSON, _ := json.Marshal(map[string]interface{}{
+				"success": false,
+				"result":  fmt.Sprintf("Error decoding query results: %v", err),
+			})
+			http.Error(w, string(responseJSON), http.StatusInternalServerError)
+			return
+		}
+		results = append(results, result)
+	}
+
+	// Convert results to JSON and write to the response
+	jsonResults, err := json.Marshal(results)
+	if err != nil {
+		responseJSON, _ := json.Marshal(map[string]interface{}{
+			"success": false,
+			"result":  fmt.Sprintf("Error encoding query results to JSON: %v", err),
+		})
+		http.Error(w, string(responseJSON), http.StatusInternalServerError)
+		return
+	}
+
+	jsonResultsToReturn := map[string]interface{}{
+		"success": true,
+		"result":  string(jsonResults),
+	}
+
+	responseJSON, _ := json.Marshal(jsonResultsToReturn)
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write(responseJSON)
+
+}

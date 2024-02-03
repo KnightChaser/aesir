@@ -31,8 +31,12 @@
             crossorigin="anonymous"
             referrerpolicy="no-referrer"></script>
 
+        <!-- Add Sweetalert2 -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
         <!-- Self API -->
         <script src="/web/asset/api/fetchEventData.js"></script>
+        <script src="/web/asset/api/fetchEventDataMultipleCondition.js"></script>
 
         <title>Aesir - System Monitor EVTX File Inspector</title>
     </head>
@@ -83,7 +87,7 @@
         </nav>
 
         <!-- main components -->
-        <div class="container">
+        <form class="container">
             <br>
             <div class="row">
                 <div class="col text-center">
@@ -141,9 +145,9 @@
                 </div>
                 <br>
                 <div class="col text-center">
-                    <button type="submit" class="btn btn-primary" id="search-form-submit-button">Search</button>
+                    <button type="button" class="btn btn-primary" id="search-form-submit-button">Search</button>
                 </div>
-            </div>
+            </form>
 
 
             <script src="/web/search/selectize.js"></script>
