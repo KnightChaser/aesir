@@ -1,5 +1,5 @@
 # aesir
-# **Under development...**
+## Under development
 ![Go](https://img.shields.io/badge/go-%2300ADD8.svg?style=for-the-badge&logo=go&logoColor=white)
 ![MongoDB](https://img.shields.io/badge/MongoDB-%234ea94b.svg?style=for-the-badge&logo=mongodb&logoColor=white)
 ![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
@@ -9,7 +9,9 @@
 ![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)
 ### A simple System monitor(Sysmon) EVTX inspector; search, visualize, and track Sysmon events
 
-How big is this project? ▶ ![code_line_badge](https://tokei.rs/b1/github/knightchaser/aesir)
+
+* **Project Size** ▶ ![code_line_badge](https://tokei.rs/b1/github/knightchaser/aesir)
+* **CI/CD status** ▶ [![automatic-docker-deployment](https://github.com/KnightChaser/aesir/actions/workflows/CICD.yml/badge.svg)](https://github.com/KnightChaser/aesir/actions/workflows/CICD.yml)
 
 ## Preview
 You can upload your own Sysmon EVTX file with your own name
@@ -18,3 +20,5 @@ Based on **MongoDB**, Your EVTX data will be structurally managed.
 ![2](./_readme_pictures/2.png)
 Main page to get overall insight of your EVTX
 ![3](./_readme_pictures/3.png)
+You can search(filter) with multiple conditions in your log file
+![4](./_readme_pictures/4.png)
