@@ -5,10 +5,17 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
 )
+
+func isDockerEnvironment() bool {
+	// Check if the DOCKER_RUN environment variable is set
+	_, isDocker := os.LookupEnv("DOCKER_RUN")
+	return isDocker
+}
 
 func main() {
 
@@ -17,6 +24,14 @@ func main() {
 	if err != nil {
 		log.Panic("Failed to load .env file.")
 	}
+
+	// Set the environment variable for the database URL if the application is not running in a Docker container
+	// For local development, the environment variable is set in the .env file
+	if !isDockerEnvironment() {
+		os.Setenv("DB_ACCESS_FULL_URL", "mongodb://localhost:27017")
+	}
+
+	fmt.Printf("Database will be accessible to %s\n", os.Getenv("DB_ACCESS_FULL_URL"))
 
 	// Setting up web server with gorilla/mux
 	muxRouter := mux.NewRouter()
