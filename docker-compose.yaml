@@ -29,6 +29,7 @@ services:
       DB_PORT: ${DB_PORT}
       DB_NAME: ${DB_NAME}
       DB_ACCESS_FULL_URL: ${DB_ACCESS_FULL_URL}
+      DOCKER_RUN: true
     networks:
       aesir_internal_docker_network:
         ipv4_address: 192.168.1.100
