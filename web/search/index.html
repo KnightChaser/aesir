@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,27 +20,26 @@
             src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
 
         <!-- Add Selectize CSS and JS links -->
-        <link
-            rel="stylesheet"
+        <link rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.15.2/css/selectize.default.min.css"
             integrity="sha512-pTaEn+6gF1IeWv3W1+7X7eM60TFu/agjgoHmYhAfLEU8Phuf6JKiiE8YmsNC0aCgQv4192s4Vai8YZ6VNM6vyQ=="
-            crossorigin="anonymous"
-            referrerpolicy="no-referrer" />
+            crossorigin="anonymous" referrerpolicy="no-referrer" />
         <script
             src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.15.2/js/selectize.min.js"
             integrity="sha512-IOebNkvA/HZjMM7MxL0NYeLYEalloZ8ckak+NDtOViP7oiYzG5vn6WVXyrJDiJPhl4yRdmNAG49iuLmhkUdVsQ=="
-            crossorigin="anonymous"
-            referrerpolicy="no-referrer"></script>
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
         <!-- Add Sweetalert2 -->
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
         <!-- Self API -->
         <script src="/web/asset/api/fetchEventData.js"></script>
-        <script src="/web/asset/api/fetchEventDataMultipleCondition.js"></script>
+        <script
+            src="/web/asset/api/fetchEventDataMultipleCondition.js"></script>
 
         <title>Aesir - System Monitor EVTX File Inspector</title>
     </head>
+
     <body>
 
         <!-- navigation bar -->
@@ -91,9 +91,8 @@
             <br>
             <div class="row">
                 <div class="col text-center">
-                    <h1>Search</h1>
-                    <p>Filter and search for your EVTX events in your
-                        collection.</p>
+                    <h1><b>Search</b></h1>
+                    <p>Filter and search EVTX events in your collection.</p>
                 </div>
             </div>
             <!-- search(filter) form -->
@@ -134,31 +133,52 @@
                         <p>Starting date and time</p>
                     </div>
                     <div class="col">
-                        <input type="datetime-local" id="starting-datetime" class="form-control">
+                        <input type="datetime-local" id="starting-datetime"
+                            class="form-control">
                     </div>
                     <div class="col-3">
                         <p>Ending date and time</p>
                     </div>
                     <div class="col">
-                        <input type="datetime-local" id="ending-datetime" class="form-control">
+                        <input type="datetime-local" id="ending-datetime"
+                            class="form-control">
                     </div>
                 </div>
                 <br>
                 <div class="col text-center">
-                    <button type="button" class="btn btn-primary" id="search-form-submit-button">Search</button>
+                    <button type="button" class="btn btn-primary"
+                        id="search-form-submit-button">Search</button>
                 </div>
-            </form>
-
-
-            <script src="/web/search/selectize.js"></script>
-            <link rel="stylesheet" href="/web/search/selectize.css">
-
-        </body>
-    </html>
             </div>
+        </form>
 
-            <script src="/web/search/selectize.js"></script>
-            <link rel="stylesheet" href="/web/search/selectize.css">
+        <!-- Table for searched data -->
+        <div class="container" id="search-result-table-container">
+            <div class="row">
+                <div class="col"></div>
+                <div class="col-20">
+                    <table class="table" id="search-result-table">
+                        <thead>
+                            <tr class="text-center">
+                                <th scope="col">Event ID</th>
+                                <th scope="col">Rule name</th>
+                                <th scope="col">Source image</th>
+                                <th scope="col">Target image</th>
+                                <th scope="col">Timestamp</th>
+                                <th scope="col">Full metadata</th>
+                            </tr>
+                        </thead>
+                        <tbody id="search-result-table-row">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col"></div>
+            </div>
+        </div>
 
-        </body>
-    </html>
+        <script src="/web/search/selectize.js"></script>
+        <link rel="stylesheet" href="/web/search/selectize.css">
+
+    </body>
+
+</html>
