@@ -1,9 +1,9 @@
-name: automatic-build-and-deployment
+name: automatic-build-and-ghcr-docker-deployment
 
 on:
   push:
-    tags:
-      - 'v*'
+    branches:
+      - main
 
 env:
   REGISTRY: ghcr.io
@@ -43,23 +43,16 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GHP_ACCESS_TOKEN }}
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
-      - name: Extract tag name
-        id: tag_name
-        run: echo "TAG_NAME=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
-
-      - name: Build and Push Docker image
-        uses: docker/build-push-action@v3
+      - name: Build and push Docker images
+        uses: docker/build-push-action@v5
         with:
           context: .
-          file: ./Dockerfile
           push: true
-          tags: |
-            ghcr.io/knightchaser/${{ env.IMAGE_NAME }}:${{ env.TAG_NAME }}
-            ghcr.io/knightchaser/${{ env.IMAGE_NAME }}:latest
-
-      - name: Clean up Buildx builder
-        if: always()
-        run: docker buildx rm
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
