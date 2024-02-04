@@ -1,13 +1,9 @@
-name: automatic-build-and-ghcr-docker-deployment
+name: automatic-docker-deployment
 
 on:
   push:
     branches:
       - main
-
-env:
-  REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
 
 jobs:
   build:
@@ -25,34 +21,21 @@ jobs:
     - name: Build Go code
       run: go build -v .
 
-  deployment-ghcr:
+  deploy:
     runs-on: ubuntu-latest
-    
-    permissions:
-      contents: read
-      packages: write
-    
+    needs: build
     steps:
-      - name: Checkout GitHub repository
+      - name: Checkout code
         uses: actions/checkout@v4
-      
-      - name: Login to GitHub Container Registry
+
+      - name: Login to Dockerhub
         uses: docker/login-action@v3
         with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GHP_ACCESS_TOKEN }}
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}  
 
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@v5
+      - name: Build and release to DockerHub
+        uses: docker/build-push-action@v2
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-
-      - name: Build and push Docker images
-        uses: docker/build-push-action@v5
-        with:
-          context: .
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/aesir:latest
