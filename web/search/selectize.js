@@ -300,41 +300,54 @@ $("#search-form-submit-button").click(function () {
         // and display it in the table
         searchResult.forEach((item, index) => {
             // overall metadata
-            let objectId = item._id;
-            let eventRecordId = item.eventrecordid;
+            let objectId = item._id || "N/A";
+            let eventRecordId = item.eventrecordid || "N/A";
 
             // system data (overall common)
-            let eventId = item.event.system.eventid;
-            let eventOccurredTime = item.event.system.timecreated.systemtime;
-            let computerName = item.event.system.computer;
-            let securityUserId = item.event.system.security.userid;
+            let eventId = item.event.system.eventid || "N/A";
+            let eventOccurredTime = item.event.system.timecreated.systemtime || "N/A";
+            let computerName = item.event.system.computer || "N/A";
+            let securityUserId = item.event.system.security.userid || "N/A";
             let provider = {
-                name: item.event.system.provider.name,
-                guid: item.event.system.provider.guid,
+                name: item.event.system.provider.name || "N/A",
+                guid: item.event.system.provider.guid || "N/A",
             }
 
             // event data (event-specific)
-            let eventName = item.event.eventdata.EventName;
-            let eventCallTrace = item.event.eventdata.CallTrace ? item.event.eventdata.CallTrace.split("|").map(trace => `<code>${trace}</code>`).join("<br>") : "-";
-            let ruleName = item.event.eventdata.RuleName;
-            let grantedAccess = item.event.eventdata.GrantedAccess;
+            let eventName = item.event.eventdata.EventName || "N/A";
+            let eventCallTrace = item.event.eventdata.CallTrace ? item.event.eventdata.CallTrace.split("|").map(trace => `<code>${trace}</code>`).join("<br>") : "N/A";
+            let ruleName = item.event.eventdata.RuleName || "N/A";
+            let grantedAccess = item.event.eventdata.GrantedAccess || "N/A";
+            let hashes = item.event.eventdata.Hashes || "N/A";
+            let processData = {
+                "parentCommandLine": item.event.eventdata.ParentCommandLine || "N/A",
+                "parentImage": item.event.eventdata.ParentImage || "N/A",
+                "parentProcessId": item.event.eventdata.ParentProcessId || "N/A",
+                "processGuid": item.event.eventdata.ProcessGuid || "N/A",
+                "processId": item.event.eventdata.ProcessId || "N/A",
+                "commandLine": item.event.eventdata.CommandLine || "N/A",
+                "description": item.event.eventdata.Description || "N/A",
+                "logonGuid": item.event.eventdata.LogonGuid || "N/A",
+            }
             let sourceImageData = {
-                "sourceImage": item.event.eventdata.SourceImage,
-                "sourceProcessGUID": item.event.eventdata.SourceProcessGUID,
-                "sourceProcessId": item.event.eventdata.SourceProcessId,
-                "sourceThreadId": item.event.eventdata.SourceThreadId,
-                "soruceUser": item.event.eventdata.SourceUser,
+                "sourceImage": item.event.eventdata.SourceImage || "N/A",
+                "sourceProcessGUID": item.event.eventdata.SourceProcessGUID || "N/A",
+                "sourceProcessId": item.event.eventdata.SourceProcessId || "N/A",
+                "sourceThreadId": item.event.eventdata.SourceThreadId || "N/A",
+                "soruceUser": item.event.eventdata.SourceUser || "N/A",
             }
             let targetImageData = {
-                "targetImage": item.event.eventdata.TargetImage,
-                "targetProcessGUID": item.event.eventdata.TargetProcessGUID,
-                "targetProcessId": item.event.eventdata.TargetProcessId,
-                "targetThreadId": item.event.eventdata.TargetThreadId,
-                "targetUser": item.event.eventdata.TargetUser,
+                "targetImage": item.event.eventdata.TargetImage || "N/A",
+                "targetProcessGUID": item.event.eventdata.TargetProcessGUID || "N/A",
+                "targetProcessId": item.event.eventdata.TargetProcessId || "N/A",
+                "targetThreadId": item.event.eventdata.TargetThreadId || "N/A",
+                "targetUser": item.event.eventdata.TargetUser || "N/A",
             }
 
             let additionalInformationAlertHTML = `
-            <table class="table">
+            <table class="table fixed">
+                <col scope="col" width="220px" />
+                <col scope="col" width="600px" />
                 <thead>
                     <tr>
                         <th scope="col">metadata</th>
@@ -428,6 +441,38 @@ $("#search-form-submit-button").click(function () {
                         <tr>
                             <th scope="row"><code>targetImageData.targetUser</code></th>
                             <td>${targetImageData.targetUser}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row"><code>processData.parentCommandLine</code></th>
+                            <td><code>${processData.parentCommandLine}</code></td>
+                        </tr>
+                        <tr>
+                            <th scope="row"><code>processData.parentImage</code></th>
+                            <td>${processData.parentImage}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row"><code>processData.parentProcessId</code></th>
+                            <td>${processData.parentProcessId}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row"><code>processData.processGuid</code></th>
+                            <td>${processData.processGuid}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row"><code>processData.processId</code></th>
+                            <td>${processData.processId}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row"><code>processData.commandLine</code></th>
+                            <td><code>${processData.commandLine}</code></td>
+                        </tr>
+                        <tr>
+                            <th scope="row"><code>processData.description</code></th>
+                            <td>${processData.description}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row"><code>processData.logonGuid</code></th>
+                            <td>${processData.logonGuid}</td>
                         </tr>
                     </tbody>
                 </thead>
