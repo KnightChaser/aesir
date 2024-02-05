@@ -300,6 +300,19 @@ $("#search-form-submit-button").click(function () {
         // Order searchResult JSON data by objectId in descending order
         let searchResult = JSON.parse(response["result"]);
 
+        // Showing the number of entire document in the collection automatically
+        fetchCollectionDocumentQty(currentCollection)
+        .then((entireDataQty) => {
+            $("#entire-document-count").text(entireDataQty.toLocaleString());
+            
+            let documentCountProportion = (count / entireDataQty) * 100;
+            $("#searched-document-count-propotion-progress-bar").css("width", documentCountProportion + "%");
+            
+        })
+        .catch((error) => {
+            console.error('Error while fetching the number of entire document :', error);
+        });
+
         // get element one by one from searchResult object
         // and display it in the table
         searchResult.forEach((item, index) => {
@@ -499,4 +512,15 @@ $("#search-form-submit-button").click(function () {
             );
         })
     })
+});
+
+// Showing the number of entire document in the collection automatically
+$(document).ready(function() {
+    fetchCollectionDocumentQty(currentCollection)
+        .then((data) => {
+            $("#entire-document-count").text(data.toLocaleString());
+        })
+        .catch((error) => {
+            console.error('Error while fetching the number of entire document :', error);
+        });
 });
