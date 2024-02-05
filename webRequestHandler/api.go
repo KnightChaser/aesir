@@ -12,7 +12,9 @@ import (
 
 	"github.com/gorilla/mux"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 // Functions for API testing
@@ -178,7 +180,8 @@ func APISearchWithMultipleCondition(w http.ResponseWriter, r *http.Request) {
 	// Perform the search using the specified condition
 	// The condition will work the same with querying data to the MongoDB console directly; such like db.{collection}.find({"event.system.eventid": 3})
 	var cursor *mongo.Cursor
-	cursor, err = collection.Find(context.Background(), searchCondition)
+	searchOptions := options.Find().SetSort(bson.D{primitive.E{Key: "_id", Value: -1}})
+	cursor, err = collection.Find(context.Background(), searchCondition, searchOptions)
 	if err != nil {
 		apiErrorJSONHandler(w, r, fmt.Sprintf("Error querying the database: %v", err), http.StatusInternalServerError)
 		return

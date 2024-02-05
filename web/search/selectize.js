@@ -293,11 +293,12 @@ $("#search-form-submit-button").click(function () {
         $("#search-result-table-row").empty();
 
         // Showing the number of results.
-        $("#searched-document-count").text(response["count"]);
+        const count = response["count"];
+        const formattedCount = count.toLocaleString();
+        $("#searched-document-count").text(formattedCount);
 
         // Order searchResult JSON data by objectId in descending order
-        let searchResult = JSON.parse(response["result"])
-        searchResult.sort((a, b) => (a._id < b._id) ? 1 : -1);
+        let searchResult = JSON.parse(response["result"]);
 
         // get element one by one from searchResult object
         // and display it in the table
