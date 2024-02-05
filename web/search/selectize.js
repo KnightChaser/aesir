@@ -315,7 +315,7 @@ $("#search-form-submit-button").click(function () {
 
             // event data (event-specific)
             let eventName = item.event.eventdata.EventName;
-            let eventCallTrace = item.event.eventdata.CallTrace.split("|").map(trace => `<code>${trace}</code>`).join("<br>");
+            let eventCallTrace = item.event.eventdata.CallTrace ? item.event.eventdata.CallTrace.split("|").map(trace => `<code>${trace}</code>`).join("<br>") : "-";
             let ruleName = item.event.eventdata.RuleName;
             let grantedAccess = item.event.eventdata.GrantedAccess;
             let sourceImageData = {
