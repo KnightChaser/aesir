@@ -287,13 +287,16 @@ $("#search-form-submit-button").click(function () {
         return;
     }
 
-    fetchEventDataMultipleCondition(currentCollection, JSON.stringify(searchCondition)).then((data) => {
-        let searchResult = JSON.parse(data);
+    fetchEventDataMultipleCondition(currentCollection, JSON.stringify(searchCondition)).then((response) => {
 
         // Clear the table before appending the search result
         $("#search-result-table-row").empty();
 
+        // Showing the number of results.
+        $("#searched-document-count").text(response["count"]);
+
         // Order searchResult JSON data by objectId in descending order
+        let searchResult = JSON.parse(response["result"])
         searchResult.sort((a, b) => (a._id < b._id) ? 1 : -1);
 
         // get element one by one from searchResult object

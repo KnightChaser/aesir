@@ -82,11 +82,7 @@ func APISearchWithCondition(w http.ResponseWriter, r *http.Request) {
 	// Decode the condition string from the URL
 	decodedCondition, err := url.QueryUnescape(condition)
 	if err != nil {
-		responseJSON, _ := json.Marshal(map[string]interface{}{
-			"success": false,
-			"result":  "Error decoding the search condition",
-		})
-		http.Error(w, string(responseJSON), http.StatusBadRequest)
+		apiErrorJSONHandler(w, r, "Error decoding the search condition", http.StatusBadRequest)
 		return
 	}
 
@@ -94,11 +90,7 @@ func APISearchWithCondition(w http.ResponseWriter, r *http.Request) {
 	var searchCondition []bson.M
 	err = bson.UnmarshalExtJSON([]byte(decodedCondition), true, &searchCondition)
 	if err != nil {
-		responseJSON, _ := json.Marshal(map[string]interface{}{
-			"success": false,
-			"result":  fmt.Sprintf("Error parsing the search condition: %v", err),
-		})
-		http.Error(w, string(responseJSON), http.StatusBadRequest)
+		apiErrorJSONHandler(w, r, fmt.Sprintf("Error parsing the search condition: %v", err), http.StatusBadRequest)
 		return
 	}
 
@@ -116,11 +108,7 @@ func APISearchWithCondition(w http.ResponseWriter, r *http.Request) {
 	} else if request == "aggregate" {
 		cursor, err = collection.Aggregate(context.Background(), searchCondition)
 	} else {
-		responseJSON, _ := json.Marshal(map[string]interface{}{
-			"success": false,
-			"result":  fmt.Sprintf("Error executing the query: %v", err),
-		})
-		http.Error(w, string(responseJSON), http.StatusInternalServerError)
+		apiErrorJSONHandler(w, r, fmt.Sprintf("Invalid request type, received %v", request), http.StatusBadRequest)
 		return
 	}
 	defer cursor.Close(context.Background())
@@ -131,11 +119,7 @@ func APISearchWithCondition(w http.ResponseWriter, r *http.Request) {
 		var result bson.M
 		err := cursor.Decode(&result)
 		if err != nil {
-			responseJSON, _ := json.Marshal(map[string]interface{}{
-				"success": false,
-				"result":  fmt.Sprintf("Error decoding query results: %v", err),
-			})
-			http.Error(w, string(responseJSON), http.StatusInternalServerError)
+			apiErrorJSONHandler(w, r, fmt.Sprintf("Error decoding query results: %v", err), http.StatusInternalServerError)
 			return
 		}
 		results = append(results, result)
@@ -144,11 +128,7 @@ func APISearchWithCondition(w http.ResponseWriter, r *http.Request) {
 	// Convert results to JSON and write to the response
 	jsonResults, err := json.Marshal(results)
 	if err != nil {
-		responseJSON, _ := json.Marshal(map[string]interface{}{
-			"success": false,
-			"result":  fmt.Sprintf("Error encoding query results to JSON: %v", err),
-		})
-		http.Error(w, string(responseJSON), http.StatusInternalServerError)
+		apiErrorJSONHandler(w, r, fmt.Sprintf("Error encoding query results to JSON: %v", err), http.StatusInternalServerError)
 		return
 	}
 
@@ -175,11 +155,7 @@ func APISearchWithMultipleCondition(w http.ResponseWriter, r *http.Request) {
 	// Decode the condition string from the URL
 	decodedCondition, err := url.QueryUnescape(condition)
 	if err != nil {
-		responseJSON, _ := json.Marshal(map[string]interface{}{
-			"success": false,
-			"result":  "Error decoding the search condition",
-		})
-		http.Error(w, string(responseJSON), http.StatusBadRequest)
+		apiErrorJSONHandler(w, r, "Error decoding the search condition", http.StatusBadRequest)
 		return
 	}
 
@@ -189,11 +165,7 @@ func APISearchWithMultipleCondition(w http.ResponseWriter, r *http.Request) {
 	err = json.Unmarshal([]byte(decodedCondition), &searchCondition)
 
 	if err != nil {
-		responseJSON, _ := json.Marshal(map[string]interface{}{
-			"success": false,
-			"result":  fmt.Sprintf("Error parsing the search condition: %v", err),
-		})
-		http.Error(w, string(responseJSON), http.StatusBadRequest)
+		apiErrorJSONHandler(w, r, fmt.Sprintf("Error parsing the search condition: %v", err), http.StatusBadRequest)
 		return
 	}
 
@@ -208,11 +180,7 @@ func APISearchWithMultipleCondition(w http.ResponseWriter, r *http.Request) {
 	var cursor *mongo.Cursor
 	cursor, err = collection.Find(context.Background(), searchCondition)
 	if err != nil {
-		responseJSON, _ := json.Marshal(map[string]interface{}{
-			"success": false,
-			"result":  fmt.Sprintf("Error executing the query: %v", err),
-		})
-		http.Error(w, string(responseJSON), http.StatusInternalServerError)
+		apiErrorJSONHandler(w, r, fmt.Sprintf("Error querying the database: %v", err), http.StatusInternalServerError)
 		return
 	}
 	defer cursor.Close(context.Background())
@@ -223,30 +191,30 @@ func APISearchWithMultipleCondition(w http.ResponseWriter, r *http.Request) {
 		var result bson.M
 		err := cursor.Decode(&result)
 		if err != nil {
-			responseJSON, _ := json.Marshal(map[string]interface{}{
-				"success": false,
-				"result":  fmt.Sprintf("Error decoding query results: %v", err),
-			})
-			http.Error(w, string(responseJSON), http.StatusInternalServerError)
+			apiErrorJSONHandler(w, r, fmt.Sprintf("Error decoding query results: %v", err), http.StatusInternalServerError)
 			return
 		}
 		results = append(results, result)
 	}
 
+	// Get the count of searched rows
+	count, err := collection.CountDocuments(context.Background(), searchCondition)
+	if err != nil {
+		apiErrorJSONHandler(w, r, fmt.Sprintf("Error counting the number of documents: %v", err), http.StatusInternalServerError)
+		return
+	}
+
 	// Convert results to JSON and write to the response
 	jsonResults, err := json.Marshal(results)
 	if err != nil {
-		responseJSON, _ := json.Marshal(map[string]interface{}{
-			"success": false,
-			"result":  fmt.Sprintf("Error encoding query results to JSON: %v", err),
-		})
-		http.Error(w, string(responseJSON), http.StatusInternalServerError)
+		apiErrorJSONHandler(w, r, fmt.Sprintf("Error encoding query results to JSON: %v", err), http.StatusInternalServerError)
 		return
 	}
 
 	jsonResultsToReturn := map[string]interface{}{
 		"success": true,
 		"result":  string(jsonResults),
+		"count":   count,
 	}
 
 	responseJSON, _ := json.Marshal(jsonResultsToReturn)
