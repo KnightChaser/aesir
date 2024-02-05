@@ -45,7 +45,7 @@ function selectizeTabSourceImages() {
                 item: function (item, escape) {
                     return (
                         "<div>" +
-                        "<span>" + escape(item.sourceImagesAbbreviated) + "</span>" +
+                        "<span><b>" + escape(item.sourceImagesAbbreviated) + "</b></span>" +
                         " <span>(" + escape(item.count) + " matches)</span>" +
                         "</div>"
                     );
@@ -126,7 +126,7 @@ function selectizeTabTargetImages() {
                 item: function (item, escape) {
                     return (
                         "<div>" +
-                        "<span>" + escape(item.targetImagesAbbreviated) + "</span>" +
+                        "<span><b>" + escape(item.targetImagesAbbreviated) + "</b></span>" +
                         " <span>(" + escape(item.count) + " matches)</span>" +
                         "</div>"
                     );
@@ -203,7 +203,7 @@ function selectizeTabRuleName() {
                 item: function (item, escape) {
                     return (
                         "<div>" +
-                        "<span>" + escape(item.ruleName) + "</span>" +
+                        "<span><b>" + escape(item.ruleName) + "</b></span>" +
                         " <span>(" + escape(item.count) + " matches)</span>" +
                         "</div>"
                     );
