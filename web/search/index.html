@@ -176,10 +176,9 @@
             </div>
 
             <div class="row">
-                <div class="col"></div>
-                <div class="col-20">
-                    <table class="table" id="search-result-table"
-                        style="width: 100%;">
+                <div class="col" style="max-width: 33.33%;"></div>
+                <div class="col-20" style="max-width: 100%; overflow-x: scroll;">
+                    <table class="table" id="search-result-table" style="width: 100%; max-width: 100%;">
                         <thead>
                             <tr class="text-center">
                                 <th scope="col">Event ID</th>
@@ -191,11 +190,12 @@
                             </tr>
                         </thead>
                         <tbody id="search-result-table-row">
+                            <!-- Your table rows go here -->
                         </tbody>
                     </table>
                 </div>
-                <div class="col"></div>
-            </div>
+                <div class="col" style="max-width: 33.33%;"></div>
+            </div>     
         </div>
 
         <script src="/web/search/selectize.js"></script>

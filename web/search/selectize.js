@@ -507,9 +507,9 @@ $("#search-form-submit-button").click(function () {
             $("#search-result-table-row").append(
                 '<tr>' +
                 '<th scope="row">' + eventRecordId + '</th>' +
-                '<td>' + ruleName + '</td>' +
-                '<td><code>' + sourceImageData.sourceImage + '</code></td>' +
-                '<td><code>' + targetImageData.targetImage + '</code></td>' +
+                '<td style="word-break: break-all;">' + ruleName + '</td>' +
+                '<td style="word-break: break-all;"><code>' + sourceImageData.sourceImage + '</code></td>' +
+                '<td style="word-break: break-all;"><code>' + targetImageData.targetImage + '</code></td>' +
                 '<td>' + eventOccurredTime + '</td>' +
                 '<td>' +
                 "<button type='button' class='btn btn-primary' style='margin:auto; display:block;' onclick='showAdditionalInfoAlert(\`" + encodeURI(additionalInformationAlertHTML) + "\`)'>Go</button>" +
