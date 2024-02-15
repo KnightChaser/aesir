@@ -307,6 +307,12 @@ $("#search-form-submit-button").click(function () {
             
             let documentCountProportion = (count / entireDataQty) * 100;
             $("#searched-document-count-propotion-progress-bar").css("width", documentCountProportion + "%");
+
+            if (documentCountProportion > 0) {
+                $("#searched-document-count-percentage").text("(" + documentCountProportion.toFixed(3) + "% of entire document)");
+            } else {
+                $("#searched-document-count-percentage").text("(0% of entire document)");
+            }
             
         })
         .catch((error) => {
