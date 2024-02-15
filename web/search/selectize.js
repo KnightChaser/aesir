@@ -287,6 +287,22 @@ $("#search-form-submit-button").click(function () {
         return;
     }
 
+    const sweetAlert2Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        customClass: {
+            popup: 'colored-toast',
+        },
+        showConfirmButton: false,
+        timer: 2000,
+        timerProgressBar: true,
+    });
+
+    sweetAlert2Toast.fire({
+        icon: 'info',
+        title: 'Searching...',
+    });
+
     fetchEventDataMultipleCondition(currentCollection, JSON.stringify(searchCondition)).then((response) => {
 
         // Clear the table before appending the search result
@@ -517,6 +533,11 @@ $("#search-form-submit-button").click(function () {
                 '</tr>'
             );
         })
+
+        sweetAlert2Toast.fire({
+            icon: 'success',
+            title: 'Search Completed!',
+        });
     })
 });
 
