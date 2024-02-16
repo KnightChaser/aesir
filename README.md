@@ -9,8 +9,6 @@
 ![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)
 ### A simple System monitor(Sysmon) EVTX inspector; search, visualize, and track Sysmon events
 
-
-* **Project Size** ▶ ![code_line_badge](https://tokei.rs/b1/github/knightchaser/aesir)
 * **CI/CD status** ▶ [![automatic-docker-deployment](https://github.com/KnightChaser/aesir/actions/workflows/CICD.yml/badge.svg)](https://github.com/KnightChaser/aesir/actions/workflows/CICD.yml)
 
 ## Preview
@@ -20,5 +18,7 @@ Based on **MongoDB**, Your EVTX data will be structurally managed.
 ![2](./_readme_pictures/2.png)
 Main page to get overall insight of your EVTX
 ![3](./_readme_pictures/3.png)
-You can search(filter) with multiple conditions in your log file
+You can search(filter) with multiple conditions in your log file, with a simple statistics that how many results you got.
 ![4](./_readme_pictures/4.png)
+You can search additional detailed information about the event at `Additional Information` tab that provides every detailed information(Currently focused on Sysmon(System Monitor)). Click `Go` button at the `Full metadata` column in the result table.
+![5](./_readme_pictures/5.png)
