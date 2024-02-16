@@ -10,7 +10,10 @@ async function fetchEventDataMultipleCondition(collectionInUse, condition) {
             return response.json();
         })
         .then(data => {
-            return data["result"];
+            return {
+                "result": data["result"],
+                "count": data["count"]
+            };
         })
         .catch(error => {
             console.error('Error:', error);

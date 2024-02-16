@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
 
     <head>
         <meta charset="UTF-8">
@@ -36,6 +35,7 @@
         <script src="/web/asset/api/fetchEventData.js"></script>
         <script
             src="/web/asset/api/fetchEventDataMultipleCondition.js"></script>
+        <script src="/web/asset/api/fetchCollectionDocumentQty.js"></script>
 
         <title>Aesir - System Monitor EVTX File Inspector</title>
     </head>
@@ -155,9 +155,30 @@
         <!-- Table for searched data -->
         <div class="container" id="search-result-table-container">
             <div class="row">
-                <div class="col"></div>
-                <div class="col-20">
-                    <table class="table" id="search-result-table">
+                <div class="col-auto">
+                    <h3>
+                        <b><span id="searched-document-count">0</span></b> out
+                        of <b><span id="entire-document-count">0</span></b>
+                        result(s) searched.
+                    </h3>
+                    <p style="text-align: center;" id="searched-document-count-percentage">(0% filtered)</p>
+                </div>
+                <div class="col">
+                    <div class="progress">
+                        <div
+                            class="progress-bar progress-bar-striped progress-bar-animated"
+                            id="searched-document-count-propotion-progress-bar"
+                            role="progressbar" aria-valuenow="0"
+                            aria-valuemin="0" aria-valuemax="100"
+                            style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col" style="max-width: 33.33%;"></div>
+                <div class="col-20" style="max-width: 100%; overflow-x: scroll;">
+                    <table class="table" id="search-result-table" style="width: 100%; max-width: 100%;">
                         <thead>
                             <tr class="text-center">
                                 <th scope="col">Event ID</th>
@@ -169,14 +190,16 @@
                             </tr>
                         </thead>
                         <tbody id="search-result-table-row">
+                            <!-- Your table rows go here -->
                         </tbody>
                     </table>
                 </div>
-                <div class="col"></div>
-            </div>
+                <div class="col" style="max-width: 33.33%;"></div>
+            </div>     
         </div>
 
         <script src="/web/search/selectize.js"></script>
+        <script src="/web/search/resultTable.js"></script>
         <link rel="stylesheet" href="/web/search/selectize.css">
 
     </body>
