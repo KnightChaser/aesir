@@ -294,7 +294,7 @@ $("#search-form-submit-button").click(function () {
             popup: 'colored-toast',
         },
         showConfirmButton: false,
-        timer: 2000,
+        timer: 3500,
         timerProgressBar: true,
     });
 
@@ -332,7 +332,12 @@ $("#search-form-submit-button").click(function () {
             
         })
         .catch((error) => {
-            console.error('Error while fetching the number of entire document :', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Error while fetching the number of entire document : ' + error,
+            });
+            throw new Error('Error while fetching the number of entire document :', error);
         });
 
         // get element one by one from searchResult object
@@ -532,7 +537,10 @@ $("#search-form-submit-button").click(function () {
                 '</td>' +
                 '</tr>'
             );
+
         })
+
+        Swal.close();
 
         sweetAlert2Toast.fire({
             icon: 'success',
@@ -548,6 +556,12 @@ $(document).ready(function() {
             $("#entire-document-count").text(data.toLocaleString());
         })
         .catch((error) => {
-            console.error('Error while fetching the number of entire document :', error);
+            Swal.Fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Error while fetching the number of entire document : ' + error,
+            
+            })
+            throw new Error('Error while fetching the number of entire document :', error);
         });
 });
